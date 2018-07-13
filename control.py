@@ -6,6 +6,7 @@ from crawlers.include.sync import sync_status
 
 from time import sleep
 
+
 class Controller(object):
     # 一次性根据配置的账号数量，初始化对应oj对应数量的Controller
     # 在外部做负载均衡
@@ -44,6 +45,8 @@ class Controller(object):
             success, info = self.get_result_by_rid(dat)
             if success:
                 sync_status(url, token, sid, info)
+            if str(info).lower() not in self.uncertain_result_status:
+                return True, info
             cnt = cnt + 1
 
         sync_status(url, token, sid, 'fetch failed')
