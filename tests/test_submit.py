@@ -4,6 +4,8 @@ from crawlers.older.hdu import hdu_submit
 from crawlers.older.poj import poj_submit
 from crawlers.older.cf import cf_submit
 
+from control import Controller
+
 import unittest
 
 
@@ -36,7 +38,9 @@ class Test(unittest.TestCase):
             return 0;
         }
         '''
-        print(poj_submit(pid, lang, src))
+        ctl = Controller('poj', 'USTBVJ', 'USTBVJ')
+        ctl.run(pid, src, lang)
+        # print(poj_submit(pid, lang, src))
 
     def test_crawler_cf(self):
         pid = '1A'

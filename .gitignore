@@ -1,5 +1,7 @@
 .idea/*
 crawlers/statics/*
+crawlers/older/*.json
+statics/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

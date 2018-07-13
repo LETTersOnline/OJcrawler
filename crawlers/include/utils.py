@@ -21,9 +21,24 @@ logging.basicConfig(level=logging.DEBUG,
 
 logging.getLogger('').addHandler(my_handler)
 
-logger = logging
 
 DEBUG = True
+
+if DEBUG:
+    # define a Handler which writes INFO messages or higher to the sys.stderr
+    console = logging.StreamHandler()
+    console.setLevel(logging.DEBUG)
+    # set a format which is simpler for console use
+    formatter = logging.Formatter('%(name)s: %(asctime)s [%(module)s:%(funcName)s] [%(levelname)s]- %(message)s')
+    # tell the handler to use this format
+    console.setFormatter(formatter)
+    # add the handler to the root logger
+    logging.getLogger('').addHandler(console)
+
+    # Now, we can log to the root logger, or any other logger. First the root...
+
+
+logger = logging
 
 # 超时秒数
 HTTP_METHOD_TIMEOUT = 10
