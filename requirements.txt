@@ -1,0 +1,6 @@
+psutil
+requests
+robobrowser
+beautifulsoup4
+html5lib
+redis

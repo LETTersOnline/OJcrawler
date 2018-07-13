@@ -1,0 +1,721 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="de45aeeb-5c84-48ab-9835-850d9e4eed26" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/XMayCry.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vj.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/control.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawlers/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawlers/base.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawlers/include/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawlers/include/exceptions.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawlers/include/sync.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawlers/include/utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawlers/older/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawlers/older/cf.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawlers/older/cf.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawlers/older/hdu.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawlers/older/hdu.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawlers/older/poj.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawlers/older/poj.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawlers/poj.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/crawlers/statics/poj/4000_1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/vj$Unittests_for_tests_Test_test_crawler_poj.coverage" NAME="Unittests for tests.Test.test_crawler_poj Coverage Results" MODIFIED="1531046666910" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/vj$Unittests_for_tests_Test_test_crawler_cf.coverage" NAME="Unittests for tests.Test.test_crawler_cf Coverage Results" MODIFIED="1531046765535" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="base.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/crawlers/base.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="912">
+              <caret line="50" selection-start-line="50" selection-end-line="52" selection-end-column="33" />
+              <folding>
+                <element signature="e#56#82#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/crawlers/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="76">
+              <caret line="4" column="8" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="poj.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/crawlers/poj.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4370">
+              <caret line="238" column="17" selection-start-line="238" selection-start-column="17" selection-end-line="238" selection-end-column="17" />
+              <folding>
+                <element signature="e#57#66#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="control.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/control.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="294">
+              <caret line="22" column="25" lean-forward="true" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="25" />
+              <folding>
+                <element signature="e#57#86#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="1" selection-start-column="1" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="sync.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/crawlers/include/sync.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="342">
+              <caret line="19" column="18" selection-start-line="19" selection-start-column="18" selection-end-line="19" selection-end-column="41" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="utils.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/crawlers/include/utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="551">
+              <caret line="34" column="19" selection-start-line="34" selection-start-column="19" selection-end-line="34" selection-end-column="19" />
+              <folding>
+                <element signature="e#56#104#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="poj.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/crawlers/older/poj.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2831">
+              <caret line="160" column="19" selection-start-line="160" selection-start-column="19" selection-end-line="160" selection-end-column="64" />
+              <folding>
+                <element signature="e#56#65#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>urlencode</find>
+      <find>read()</find>
+      <find>MAP</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/exception.py" />
+        <option value="$PROJECT_DIR$/crawlers/hdu.json" />
+        <option value="$PROJECT_DIR$/sync.py" />
+        <option value="$PROJECT_DIR$/utils.py" />
+        <option value="$PROJECT_DIR$/crawlers/poj.json" />
+        <option value="$PROJECT_DIR$/tests.py" />
+        <option value="$PROJECT_DIR$/crawlers/cf.json" />
+        <option value="$PROJECT_DIR$/crawlers/hdu.py" />
+        <option value="$PROJECT_DIR$/crawlers/cf.py" />
+        <option value="$PROJECT_DIR$/requirements.txt" />
+        <option value="$PROJECT_DIR$/crawlers/older/__init__.py" />
+        <option value="$PROJECT_DIR$/crawlers/__init__.py" />
+        <option value="$PROJECT_DIR$/crawlers/base.py" />
+        <option value="$PROJECT_DIR$/crawlers/poj.py" />
+        <option value="$PROJECT_DIR$/crawlers/include/utils.py" />
+        <option value="$PROJECT_DIR$/control.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths />
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="147" />
+    <option name="y" value="-12" />
+    <option name="width" value="718" />
+    <option name="height" value="513" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="vj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="vj" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="vj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="vj" type="462c0819:PsiDirectoryNode" />
+              <item name="crawlers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="vj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\XMayCry\PycharmProjects\vj\tests" />
+      <recent name="C:\Users\XMayCry\PycharmProjects\vj\crawlers\older" />
+      <recent name="C:\Users\XMayCry\PycharmProjects\vj\crawlers" />
+      <recent name="C:\Users\XMayCry\PycharmProjects\vj\crawlers\include" />
+      <recent name="C:\Users\XMayCry\PycharmProjects\vj" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python tests.Unittests for tests.tests.Test.test_crawler_cf">
+    <configuration name="Unittests for tests.tests.Test.test_crawler_cf" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="vj" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;tests.tests.Test.test_crawler_cf&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+    </configuration>
+    <configuration name="Unittests for tests.tests.Test.test_crawler_poj" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <module name="vj" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;tests.tests.Test.test_crawler_poj&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+    </configuration>
+    <list>
+      <item itemvalue="Python tests.Unittests for tests.tests.Test.test_crawler_cf" />
+      <item itemvalue="Python tests.Unittests for tests.tests.Test.test_crawler_poj" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python tests.Unittests for tests.tests.Test.test_crawler_cf" />
+        <item itemvalue="Python tests.Unittests for tests.tests.Test.test_crawler_poj" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="de45aeeb-5c84-48ab-9835-850d9e4eed26" name="Default" comment="" />
+      <created>1530898537285</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1530898537285</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TestHistory">
+    <history-entry file="Unittests_for_tests_Test_test_crawler_cf - 2018.07.08 at 13h 46m 34s.xml">
+      <configuration name="Unittests for tests.Test.test_crawler_cf" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_tests_Test_test_crawler_cf - 2018.07.08 at 13h 48m 08s.xml">
+      <configuration name="Unittests for tests.Test.test_crawler_cf" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_tests_Test_test_crawler_cf - 2018.07.08 at 13h 50m 20s.xml">
+      <configuration name="Unittests for tests.Test.test_crawler_cf" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_tests_Test_test_crawler_cf - 2018.07.08 at 13h 50m 39s.xml">
+      <configuration name="Unittests for tests.Test.test_crawler_cf" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_tests_Test_test_crawler_cf - 2018.07.08 at 13h 51m 31s.xml">
+      <configuration name="Unittests for tests.Test.test_crawler_cf" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_tests_Test_test_crawler_cf - 2018.07.08 at 13h 51m 38s.xml">
+      <configuration name="Unittests for tests.Test.test_crawler_cf" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_tests_Test_test_crawler_poj - 2018.07.08 at 18h 44m 40s.xml">
+      <configuration name="Unittests for tests.Test.test_crawler_poj" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_tests_Test_test_crawler_cf - 2018.07.08 at 18h 44m 48s.xml">
+      <configuration name="Unittests for tests.Test.test_crawler_cf" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_tests_Test_test_crawler_cf - 2018.07.08 at 18h 45m 30s.xml">
+      <configuration name="Unittests for tests.Test.test_crawler_cf" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_for_tests_Test_test_crawler_cf - 2018.07.08 at 18h 46m 28s.xml">
+      <configuration name="Unittests for tests.Test.test_crawler_cf" configurationId="tests" />
+    </history-entry>
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-7" y="-7" width="2062" height="1126" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32929292" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Python Console" order="7" weight="0.29625884" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.37171718" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.35490394" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.33283433" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="right" id="Database" order="3" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32861477" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <option name="time" value="2" />
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/tests/tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1159">
+          <caret line="66" column="45" lean-forward="true" selection-start-line="66" selection-start-column="45" selection-end-line="66" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/VirtualJudgeSpider/control.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="17" column="8" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/older/hdu.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2166">
+          <caret line="114" column="8" selection-start-line="114" selection-start-column="8" selection-end-line="114" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="8" column="18" lean-forward="true" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/older/hdu.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="3" column="13" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/include/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="15" column="33" lean-forward="true" selection-start-line="15" selection-start-column="33" selection-end-line="15" selection-end-column="33" />
+          <folding>
+            <element signature="e#56#104#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/include/sync.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="6" column="4" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/judge.log" />
+    <entry file="file://$PROJECT_DIR$/crawlers/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="8" selection-start-line="8" selection-end-line="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/older/hdu.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="931">
+          <caret line="49" lean-forward="true" selection-start-line="49" selection-end-line="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/include/exceptions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="4" column="8" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/include/sync.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/include/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+          <folding>
+            <element signature="e#56#104#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/include/exceptions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/include/sync.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" column="8" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/include/exceptions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/include/sync.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" column="8" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://H:/_/OJ/OnlineJudgeDeploy-gplt2/code/tools-letters/gplt/submitter.py" />
+    <entry file="file://H:/_/OJ/OnlineJudgeDeploy-gplt2/code/tools-letters/gplt/crawler.py" />
+    <entry file="file://C:/Program Files/Python36/Lib/urllib/request.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="325" column="8" selection-start-line="325" selection-start-column="8" selection-end-line="325" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/older/poj.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="5" column="1" lean-forward="true" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/older/hdu.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="5" column="1" lean-forward="true" selection-end-line="5" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/VirtualJudgeSpider/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="326">
+          <caret line="27" column="28" lean-forward="true" selection-start-line="27" selection-start-column="28" selection-end-line="27" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/VirtualJudgeSpider/control.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="25" column="20" lean-forward="true" selection-start-line="25" selection-start-column="20" selection-end-line="25" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/older/cf.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="5" column="1" lean-forward="true" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/robobrowser/browser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="201" column="62" lean-forward="true" selection-start-line="201" selection-start-column="62" selection-end-line="201" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2018.1/system/python_stubs/381546204/_socket.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="172">
+          <caret line="728" column="6" selection-start-line="728" selection-start-column="6" selection-end-line="728" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/include/exceptions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/older/hdu.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="174" lean-forward="true" selection-start-line="174" selection-end-line="174" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="3" column="14" lean-forward="true" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/older/cf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="146" column="9" selection-start-line="146" selection-start-column="9" selection-end-line="146" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.html" />
+    <entry file="file://$PROJECT_DIR$/crawlers/older/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="16" column="1" selection-start-line="16" selection-start-column="1" selection-end-line="16" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/judge.log" />
+    <entry file="file://$PROJECT_DIR$/tests/tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="11" column="18" lean-forward="true" selection-start-line="11" selection-start-column="18" selection-end-line="11" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="912">
+          <caret line="50" selection-start-line="50" selection-end-line="52" selection-end-column="33" />
+          <folding>
+            <element signature="e#56#82#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/older/poj.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2831">
+          <caret line="160" column="19" selection-start-line="160" selection-start-column="19" selection-end-line="160" selection-end-column="64" />
+          <folding>
+            <element signature="e#56#65#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="4" column="8" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/include/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="551">
+          <caret line="34" column="19" selection-start-line="34" selection-start-column="19" selection-end-line="34" selection-end-column="19" />
+          <folding>
+            <element signature="e#56#104#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/poj.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4370">
+          <caret line="238" column="17" selection-start-line="238" selection-start-column="17" selection-end-line="238" selection-end-column="17" />
+          <folding>
+            <element signature="e#57#66#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crawlers/include/sync.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="19" column="18" selection-start-line="19" selection-start-column="18" selection-end-line="19" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/control.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="22" column="25" lean-forward="true" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="25" />
+          <folding>
+            <element signature="e#57#86#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="1" selection-start-column="1" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
