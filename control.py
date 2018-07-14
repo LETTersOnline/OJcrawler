@@ -38,6 +38,9 @@ class Controller(object):
     def get_result_by_rid(self, rid):
         return self.oj.get_result_by_rid(rid)
 
+    def get_compile_error_info(self, rid):
+        return self.oj.get_compile_error_info(rid)
+
     @property
     def uncertain_result_status(self):
         return self.oj.uncertain_result_status
@@ -55,9 +58,10 @@ class Controller(object):
             sleep(RESULT_INTERVAL)
             success, info = self.get_result_by_rid(dat)
             if success:
-                self.sync_func(info, *args, **kwargs)
-            if str(info).lower() not in self.uncertain_result_status:
-                return True, info
+                status = info['status']
+                self.sync_func(status, *args, **kwargs)
+                if str(status).lower() not in self.uncertain_result_status:
+                    return True, info
             cnt = cnt + 1
 
         self.sync_func('fetch failed', *args, **kwargs)

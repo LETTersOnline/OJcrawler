@@ -47,20 +47,25 @@ HTTP_METHOD_TIMEOUT = 10
 RESULT_COUNT = 20
 
 # 每两次获取结果之间间隔 / s
-RESULT_INTERVAL = 3
+RESULT_INTERVAL = 1
 
 STATIC_OJ_ROOT = os.path.join(pathlib.Path(__file__).parent.parent, 'statics')
 STATIC_OJ_URL = 'localhost:8000/statics/'
 
 
-def save_static_file(static_file_url, save_folder, file_name=None):
+def save_static_file(static_file_url, sub_directory_name, file_name=None):
     # 保存静态文件，并返回新的url
     if not file_name:
         file_name = static_file_url.split('/')[-1]
-    path = os.path.join(save_folder, file_name)
+
+    image_folder = os.path.join(STATIC_OJ_ROOT, sub_directory_name)
+    if not os.path.exists(image_folder):
+        os.makedirs(image_folder)
+    path = os.path.join(image_folder, file_name)
+
     req = urllib.request.Request(static_file_url)
     resp = urllib.request.urlopen(req)
     data = resp.read()
     with open(path, 'wb') as fp:
         fp.write(data)
-    return STATIC_OJ_URL + file_name
+    return STATIC_OJ_URL + sub_directory_name + '/' + file_name

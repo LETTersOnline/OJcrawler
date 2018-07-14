@@ -33,15 +33,11 @@ class OJ(object):
         raise NotImplementedError
 
     @property
-    def http_headers(self):
-        raise NotImplementedError
-
-    @property
     def url_status(self):
         raise NotImplementedError
 
     @property
-    def result_fields(self):
+    def http_headers(self):
         raise NotImplementedError
 
     @property
@@ -53,20 +49,33 @@ class OJ(object):
         raise NotImplementedError
 
     @property
-    def compatible_result_fields(self):
-        return ['v_run_id', 'v_submit_time', 'v_user', 'problem', 'language', 'status', 'time', 'memory']
-
-    @property
     def compatible_problem_fields(self):
         # time limit 数字，单位为 ms
         # memory limit 数字，单位为 kb
         # input/output sample 为有序列表，长度相同
-        # 三个description和hint为html源码，并替换了其中的image路径为本地路径
+        # 三个description和hint，source为html源码，并替换了其中的image路径为本地路径
         # 其余为字符串
-        return ['title', 'judge_os', 'time_limit', 'memory_limit',
-                'description', 'input_description', 'output_description', 'hint',
+
+        # 需要额外考虑一下针对不同语言的不同的time limit和memory limit
+        # time_limit = {
+        #   'default': 1000,
+        #   'java': 3000,
+        # }
+        # memory_limit = {
+        #   'default': 65536,
+        # }
+
+        # problem_type为字符串，表示题目类型，默认为'regular', 可选为'special judge'等
+
+        return ['title', 'judge_os', 'time_limit', 'memory_limit', 'problem_type',
+                'description', 'input_description', 'output_description', 'hint', 'source',
                 'input_sample', 'output_sample',
                 ]
+
+    @property
+    def problem_sample_fields(self):
+        # 只需要text内容，并转为list存储
+        raise NotImplementedError
 
     # 以下为基础函数
     def get(self, url):
@@ -142,5 +151,9 @@ class OJ(object):
         raise NotImplementedError
 
     def get_result_by_rid(self, rid):
+        # 这个不一定每个系统都能实现
+        pass
+
+    def get_compile_error_info(self, rid):
         # 这个不一定每个系统都能实现
         pass
