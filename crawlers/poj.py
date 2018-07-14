@@ -7,13 +7,13 @@ from urllib import request, parse
 from urllib.error import URLError, HTTPError
 
 from crawlers.base import OJ
-from crawlers.include.utils import logger, save_static_file
-from crawlers.include.utils import HTTP_METHOD_TIMEOUT
+from crawlers.config import logger, save_image
+from crawlers.config import HTTP_METHOD_TIMEOUT
 
 
 class POJ(OJ):
-    def __init__(self, handle, password):
-        super().__init__(handle, password)
+    def __init__(self, handle, password, image_func=save_image):
+        super().__init__(handle, password, image_func)
 
         # 声明一个CookieJar对象实例来保存cookie
         cookie = cookiejar.CookieJar()
@@ -130,7 +130,7 @@ class POJ(OJ):
         left = pos + 10
         right = pos + end_pos - 1
         image_url = self.url_home + html[left:right]
-        saved_url = save_static_file(image_url, 'poj')
+        saved_url = self.image_func(image_url, self.oj_name)
         return html[:left] + saved_url + self.replace_image(html[right:])
 
     def get_problem(self, pid):

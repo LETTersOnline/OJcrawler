@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 # Created by crazyX on 2018/7/7
-from crawlers.older.hdu import hdu_submit
-from crawlers.older.poj import poj_submit
-from crawlers.older.cf import cf_submit
 
 from control import Controller
 
@@ -10,10 +7,21 @@ import unittest
 
 
 class Test(unittest.TestCase):
+
     def test_crawler_hdu(self):
         pid = 1000
         lang = 'g++'
-        src = '''
+        ac_src = '''
+        #include<bits/stdc++.h>
+        using namespace std;
+        int main()
+        {
+            int a,b;
+            while(cin>>a>>b)cout<<a+b<<endl;
+            return 0;
+        }
+        '''
+        wa_src = '''
         #include<bits/stdc++.h>
         using namespace std;
         int main()
@@ -23,12 +31,24 @@ class Test(unittest.TestCase):
             return 0;
         }
         '''
-        print(hdu_submit(pid, lang, src))
+        ctl = Controller('hdu', 'USTBVJ', 'USTBVJ')
+        ctl.run(pid, ac_src, lang)
+        ctl.run(pid, wa_src, lang)
 
     def test_crawler_poj(self):
         pid = 1000
         lang = 'g++'
-        src = '''
+        wa_src = '''
+        #include<iostream>
+        using namespace std;
+        int main()
+        {
+            int a,b;
+            while(cin>>a>>b)cout<<a-b<<endl;
+            return 0;
+        }
+        '''
+        ac_src = '''
         #include<iostream>
         using namespace std;
         int main()
@@ -39,8 +59,8 @@ class Test(unittest.TestCase):
         }
         '''
         ctl = Controller('poj', 'USTBVJ', 'USTBVJ')
-        ctl.run(pid, src, lang)
-        # print(poj_submit(pid, lang, src))
+        ctl.run(pid, ac_src, lang)
+        ctl.run(pid, wa_src, lang)
 
     def test_crawler_cf(self):
         pid = '1A'
@@ -59,7 +79,6 @@ class Test(unittest.TestCase):
             //fuck you you
         }
         '''
-        print(cf_submit(pid, lang, src))
 
 
 if __name__ == '__main__':

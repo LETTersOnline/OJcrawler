@@ -7,13 +7,13 @@ from urllib import request, parse
 from urllib.error import URLError, HTTPError
 
 from crawlers.base import OJ
-from crawlers.include.utils import logger, save_static_file
-from crawlers.include.utils import HTTP_METHOD_TIMEOUT
+from crawlers.config import logger, save_image
+from crawlers.config import HTTP_METHOD_TIMEOUT
 
 
 class HDU(OJ):
-    def __init__(self, handle, password):
-        super().__init__(handle, password)
+    def __init__(self, handle, password, image_func=save_image):
+        super().__init__(handle, password, image_func)
 
         # 声明一个CookieJar对象实例来保存cookie
         cookie = cookiejar.CookieJar()
@@ -122,16 +122,18 @@ class HDU(OJ):
 
     def replace_image(self, html):
         # http://acm.hdu.edu.cn/showproblem.php?pid=3987
-        #
+        # http://acm.hdu.edu.cn/showproblem.php?pid=1033
         pos = html.find('<img')
         if pos == -1:
             return html
         src_pos = html[pos:].find('src=')
-        data_pos = html[pos + src_pos:].find('data/images/')
-        end_pos = html[pos:].find('>')
-        image_url = self.url_home + html[pos + src_pos + data_pos:pos + end_pos - 1]
-        saved_url = save_static_file(image_url, 'hdu')
-        return html[:pos + src_pos + 5] + saved_url + self.replace_image(html[pos + end_pos - 1:])
+        stp = pos + src_pos + 5
+        edp = html[stp + 1:].find('"') + stp
+        url = html[stp: edp + 1]
+        image_url = self.url_home + url[url.find('/data/') + 1:]
+        saved_url = self.image_func(image_url, self.oj_name)
+
+        return html[:stp] + saved_url + self.replace_image(html[edp + 1:])
 
     def get_problem(self, pid):
         ret = self.get(self.url_problem(pid))
@@ -157,7 +159,7 @@ class HDU(OJ):
                     'java': memory_java,
                 }
                 spj = soup.find('font', {'color': 'red'})
-                problem_type = 'special judge' if 'Special Judge' == spj.text else 'regular'
+                problem_type = 'special judge' if spj and 'Special Judge' == spj.text else 'regular'
 
                 # 题面
 

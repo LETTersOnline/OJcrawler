@@ -2,15 +2,24 @@
 # Created by crazyX on 2018/7/8
 from socket import timeout
 from urllib.error import URLError, HTTPError
-from crawlers.include.utils import logger, HTTP_METHOD_TIMEOUT
+from crawlers.config import logger, save_image
+from crawlers.config import HTTP_METHOD_TIMEOUT
 
 
 class OJ(object):
     # 每一个账号同一时间只考虑交一道题目，这样可以有效避免查封，且方便处理
 
-    def __init__(self, handle, password):
+    def __init__(self, handle, password, image_func):
         self.handle = handle
         self.password = password
+        self.image_func = image_func
+
+    def __str__(self):
+        return "{}({})".format(self.oj_name, self.handle)
+
+    @property
+    def oj_name(self):
+        return self.__class__.__name__
 
     # 以下为基础属性
     @property
@@ -94,15 +103,6 @@ class OJ(object):
     @staticmethod
     def http_status_code(response):
         return response.status if response else None
-
-    @staticmethod
-    def str2int(string):
-        if not string:
-            return 0
-        try:
-            return int(string[:-1])
-        except:
-            return int(string[:-2])
 
     def ping(self):
         # 5s是否能访问主页
