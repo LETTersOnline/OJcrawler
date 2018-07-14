@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # Created by crazyX on 2018/7/13
-import os
 from socket import timeout
 from http import cookiejar
 from bs4 import BeautifulSoup
