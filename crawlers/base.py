@@ -61,6 +61,7 @@ class OJ(object):
     def compatible_problem_fields(self):
         # time limit 数字，单位为 ms
         # memory limit 数字，单位为 kb
+        # origin 为题目链接字符串
         # input/output sample 为有序列表，长度相同
         # 三个description和hint，source为html源码，并替换了其中的image路径为本地路径
         # 其余为字符串
@@ -76,7 +77,7 @@ class OJ(object):
 
         # problem_type为字符串，表示题目类型，默认为'regular', 可选为'special judge'等
 
-        return ['title', 'judge_os', 'time_limit', 'memory_limit', 'problem_type',
+        return ['title', 'judge_os', 'time_limit', 'memory_limit', 'problem_type', 'origin',
                 'description', 'input_description', 'output_description', 'hint', 'source',
                 'input_sample', 'output_sample',
                 ]

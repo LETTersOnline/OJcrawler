@@ -59,7 +59,7 @@ class POJ(OJ):
 
     @property
     def problem_fields(self):
-        return ['title', 'judge_os', 'time_limit', 'memory_limit', 'problem_type',
+        return ['title', 'judge_os', 'time_limit', 'memory_limit', 'problem_type', 'origin',
                 'Description', 'Input', 'Output', 'Hint', 'Source',
                 'Sample Input', 'Sample Output',
                 ]
@@ -123,6 +123,7 @@ class POJ(OJ):
             return False
 
     def replace_image(self, html):
+        # TODO: check if all works
         pos = html.find('<img src=')
         if pos == -1:
             return html
@@ -184,6 +185,7 @@ class POJ(OJ):
                     'time_limit': time_limit,
                     'memory_limit': memory_limit,
                     'problem_type': problem_type,
+                    'origin': self.url_problem(pid),
                 }
                 for key in data:
                     if key in self.problem_fields:
@@ -210,7 +212,7 @@ class POJ(OJ):
             # 不直接用重定向页面是因为，并发高的时候，第一个提交并不一定是自己的
             if ret.url == self.url_status[:-1]:
                 ok, info = self.get_result()
-                return True, info['rid'] if ok else False, '提交代码（获取提交id）：' + info
+                return (True, info['rid']) if ok else (False, '提交代码（获取提交id）：' + info)
             else:
                 html = ret.read().decode()
                 soup = BeautifulSoup(html, 'html5lib')

@@ -59,7 +59,7 @@ class HDU(OJ):
 
     @property
     def problem_fields(self):
-        return ['title', 'judge_os', 'time_limit', 'memory_limit', 'problem_type',
+        return ['title', 'judge_os', 'time_limit', 'memory_limit', 'problem_type', 'origin',
                 'Problem Description', 'Input', 'Output', 'Hint', 'Source',
                 'Sample Input', 'Sample Output',
                 ]
@@ -104,7 +104,7 @@ class HDU(OJ):
         )
         ret = self.post(self.url_login, data)
         if ret:
-            html = ret.read().decode()
+            html = ret.read().decode('gbk')
             if html.find('signout') > 0:
                 return True, ''
             else:
@@ -115,7 +115,7 @@ class HDU(OJ):
     def is_login(self):
         ret = self.get(self.url_home)
         if ret:
-            html = ret.read().decode()
+            html = ret.read().decode('gbk')
             return True if html.find('<img alt="Author"') > 0 else False
         else:
             return False
@@ -183,6 +183,7 @@ class HDU(OJ):
                     'time_limit': time_limit,
                     'memory_limit': memory_limit,
                     'problem_type': problem_type,
+                    'origin': self.url_problem(pid),
                 }
                 for key in data:
                     if key in self.problem_fields:
@@ -200,15 +201,22 @@ class HDU(OJ):
                 return False, info
         data = dict(
             problemid=pid,
-            language=self.get_languages[pid.upper()],
+            language=self.get_languages[lang.upper()],
             usercode=source,
             check='0',
         )
         ret = self.post(self.url_submit, data)
         if ret:
-            html = ret.read().decode()
-            soup = BeautifulSoup(html, 'html5lib')
-
+            # 不直接用重定向页面是因为，并发高的时候，第一个提交并不一定是自己的
+            if ret.url == self.url_status[:-1]:
+                ok, info = self.get_result()
+                return (True, info['rid']) if ok else (False, '提交代码（获取提交id）：' + info)
+            elif ret.url == self.url_submit:
+                html = ret.read().decode('gbk')
+                soup = BeautifulSoup(html, 'html5lib')
+                return False, soup.find('div', {'style': 'color:red; font-size:12px'}).text
+            else:
+                return False, '提交代码：未知错误'
         else:
             return False, '提交代码：http方法错误，请检查网络后重试'
 
@@ -216,7 +224,7 @@ class HDU(OJ):
         # 获取url_result下的第一个结果
         ret = self.get(url_result)
         if ret:
-            html = ret.read().decode()
+            html = ret.read().decode('gbk')
             soup = BeautifulSoup(html, 'html5lib')
             table = soup.find('table', {'class': 'table_text'})
             trs = table.find_all('tr')
