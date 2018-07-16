@@ -1,33 +1,17 @@
 # -*- coding: utf-8 -*-
 # Created by crazyX on 2018/7/12
 from crawlers import supports
-from crawlers.include.utils import RESULT_COUNT, RESULT_INTERVAL, logger
+from crawlers.config import RESULT_COUNT, RESULT_INTERVAL, logger
 import inspect
 from time import sleep
-
-
-def sample_sync_func(status, *args, **kwargs):
-    logger.info("status: " + status)
-
-
-def sample_save_image(image_url, oj_name):
-    # 传入一个图片的地址，返回新的地址
-    # oj_name 会传入oj自身的名字，方便用来分类
-    # 1. 可以将图片保存到本地然后返回静态服务器的地址
-    # 2. 可以上传到某图云然后返回图云的地址
-    # 3. 也可以直接返回源oj的地址，这样如果不能访问外网就存在风险
-    return image_url
+from queue import Queue
+from utils import sample_save_image, sample_sync_func, Worker
 
 
 class Controller(object):
-    # 一次性根据配置的账号数量，初始化对应oj对应数量的Controller
-    # 在外部做负载均衡
 
-    def __init__(self, oj_name: str, handle: str, password: str,
-                 sync_func=sample_sync_func,
-                 image_func=sample_save_image):
-        if oj_name.lower() not in supports.keys():
-            raise NotImplementedError
+    # 不同OJ爬虫的同步状态函数和替换图片url函数已经被抽象为统一的函数
+    def __init__(self, sync_func=sample_sync_func, image_func=sample_save_image):
         # 这个函数用来同步状态，必须为sync_func(status, *args, **kwargs) 形式
         args = inspect.getfullargspec(sync_func)[0]
         if len(args) < 1 or args[0] != 'status':
@@ -42,49 +26,97 @@ class Controller(object):
                              'sample: sample_save_image(image_url, oj_name)'.format(args[0], args[1]))
 
         self.sync_func = sync_func
-        self.oj = supports[oj_name.lower()](handle, password)
+        self.image_func = image_func
+
+        self.queues = {}
+        # self.workers = {}   # 一个oj可能对应多个worker，{'poj': [instance1, instance2], 'hdu': [instance1]}
+        # self.workers = []   # 不需要知道具体哪个worker是哪个oj的，因为他们都只受queue的控制
+        self.workers = {}
+
+        for key in supports.keys():
+            self.queues[key] = Queue()
+            self.workers[key] = []
+
+    def __del__(self):
+        self.stop()
+
+    def _add_account(self, oj_name, handle, password):
+        # 同一个oj重复handle只会采用第一个的配置
+        worker = Worker(oj_name, handle, password, self.queues[oj_name], self.image_func, self.sync_func)
+        # 可能是已经存在的实例
+        if worker not in self.workers[oj_name]:
+            self.workers[oj_name].append(worker)
+
+    def init_accounts(self, accounts):
+        # 初始化account信息，注意不能用重复的信息初始化
+        # 注意会清空之前的账号信息
+        for oj_name, handle, password in accounts:
+            if oj_name not in supports.keys():
+                return False, 'oj_name only supports: {}'.format(str(supports.keys()))
+
+        # 先停止所有的worker
+        self.stop()
+        # 创建对应的队列集和工作者集
+        for key in supports.keys():
+            self.queues[key] = Queue()
+            self.workers[key] = []
+        for oj_name, handle, password in accounts:
+            self._add_account(oj_name, handle, password)
+        return True
+
+    def add_task(self, oj_name, pid, source, lang, *args):
+        if oj_name not in self.queues:
+            return False, 'oj_name only supports: {}'.format(str(self.queues.keys()))
+        self.queues[oj_name].put((pid, source, lang, *args))
+
+    def start(self):
+        for key in self.workers:
+            for worker in self.workers[key]:
+                worker.setDaemon(True)
+                worker.start()
+
+    def pause(self):
+        for key in self.workers:
+            for worker in self.workers[key]:
+                worker.pause()
+
+    def stop(self):
+
+        for key in self.workers:
+            for worker in self.workers[key]:
+                assert type(worker) == Worker
+                worker.stop()
+
+        for key in self.queues.keys():
+            cnt = len(self.workers[key])
+            for i in range(cnt):
+                self.queues[key].put(None)
+
+        for key in self.workers:
+            for worker in self.workers[key]:
+                worker.join()
+
+        # 清空worker和队列内存
+        for queue in self.queues.values():
+            with queue.mutex:
+                queue.queue.clear()
+            del queue
+        for key in self.workers:
+            for worker in self.workers[key]:
+                del worker
+        self.queues = {}
+        self.workers = {}
+
 
     def get_problem(self, pid):
         return self.oj.get_problem(pid)
-
-    def submit_code(self, pid, source, lang):
-        return self.oj.submit_code(pid, source, lang)
-
-    def get_result(self):
-        return self.oj.get_result()
-
-    def get_result_by_rid(self, rid):
-        return self.oj.get_result_by_rid(rid)
 
     def get_compile_error_info(self, rid):
         return self.oj.get_compile_error_info(rid)
 
     @property
-    def uncertain_result_status(self):
-        return self.oj.uncertain_result_status
-
-    @property
     def get_languages(self):
         return self.oj.get_languages
 
-    def run(self, pid, source, lang, *args, **kwargs):
-        # 一般来说只需要调用这个函数去提交代码以及获得结果
-        # 固定次数和间隔轮询
-        # args和kwargs都是用来给sync函数同步状态使用
-        success, dat = self.submit_code(pid, source, lang)
-        if not success:
-            return False, dat
-        self.sync_func('submitted', *args, **kwargs)
-        cnt = 0
-        while cnt < RESULT_COUNT:
-            sleep(RESULT_INTERVAL)
-            success, info = self.get_result_by_rid(dat)
-            if success:
-                status = info['status']
-                self.sync_func(status, *args, **kwargs)
-                if str(status).lower() not in self.uncertain_result_status:
-                    return True, info
-            cnt = cnt + 1
 
-        self.sync_func('fetch failed', *args, **kwargs)
-        return False, '获取运行结果失败'
+
