@@ -8,7 +8,7 @@ from crawlers.config import HTTP_METHOD_TIMEOUT
 
 class OJ(object):
     # 每一个账号同一时间只考虑交一道题目，这样可以有效避免查封，且方便处理
-
+    # image_func 用来做网页中图片的url替换
     def __init__(self, handle, password, image_func):
         self.handle = handle
         self.password = password
