@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Created by crazyX on 2018/7/8
+import uuid
 from socket import timeout
 from urllib.error import URLError, HTTPError
 from crawlers.config import logger, save_image
@@ -59,12 +60,18 @@ class OJ(object):
 
     @property
     def compatible_problem_fields(self):
+        # title 为标题，字符串
         # time limit 数字，单位为 ms
         # memory limit 数字，单位为 kb
+        # problem_type为字符串，表示题目类型，默认为'regular', 可选为'special judge'，'interactive'等
         # origin 为题目链接字符串
-        # input/output sample 为有序列表，长度相同
-        # 三个description和hint，source为html源码，并替换了其中的image路径为本地路径
-        # 其余为字符串
+
+        # samples_input\output为list：
+        # samp
+        # 注意某些samples可能没有输入或者没有输出
+
+        # descriptions为所有描述，hint, source, 等内容的二元组有序列表，内容都为html源码，并替换了其中的image路径为本地路径
+        # [(sub_title1, html1), (sub_title2, html2), ...]
 
         # 需要额外考虑一下针对不同语言的不同的time limit和memory limit
         # time_limit = {
@@ -75,11 +82,12 @@ class OJ(object):
         #   'default': 65536,
         # }
 
-        # problem_type为字符串，表示题目类型，默认为'regular', 可选为'special judge'等
+        # Description, Input, Output, Samples, Hint
 
-        return ['title', 'judge_os', 'time_limit', 'memory_limit', 'problem_type', 'origin',
-                'description', 'input_description', 'output_description', 'hint', 'source',
-                'input_sample', 'output_sample',
+        return ['title', 'problem_type', 'origin',
+                'time_limit', 'memory_limit',
+                'samples_input', 'samples_output',
+                'descriptions',
                 ]
 
     @property
@@ -109,11 +117,6 @@ class OJ(object):
         # 5s是否能访问主页
         response = self.get(self.url_home)
         return self.http_status_code(response) == 200
-
-    # 以下为OJ行为函数
-    @staticmethod
-    def batch_register():
-        pass
 
     @staticmethod
     def get_languages():
