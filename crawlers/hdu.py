@@ -237,7 +237,11 @@ class HDU(OJ):
                     'status': trs[1].contents[2].text.strip(),
                     'time': trs[1].contents[4].text.strip(),
                     'memory': trs[1].contents[5].text.strip(),
+                    'ce_info': '',
                 }
+                if data['status'] == 'Compilation Error':
+                    ret, info = self.get_compile_error_info(data['rid'])
+                    data['ce_info'] = info if ret else ''
                 return True, data
         else:
             return False, '获取结果：http方法错误，请检查网络后重试'
