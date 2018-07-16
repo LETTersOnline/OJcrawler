@@ -83,8 +83,8 @@ class HDU(OJ):
         except timeout:
             logger.error('socket timed out\nURL: %s', url)
 
-    @property
-    def get_languages(self):
+    @staticmethod
+    def get_languages():
         # hdu支持语言不太可能发生变化
         return {
             'G++': '0',

@@ -112,11 +112,11 @@ class OJ(object):
 
     # 以下为OJ行为函数
     @staticmethod
-    def batch_register(self):
+    def batch_register():
         pass
 
-    @property
-    def get_languages(self):
+    @staticmethod
+    def get_languages():
         # 获取语言列表
         # example:
         # LANGUAGE = {

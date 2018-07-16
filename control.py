@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 # Created by crazyX on 2018/7/12
-from crawlers import supports
-from crawlers.config import RESULT_COUNT, RESULT_INTERVAL, logger
+from crawlers import supports, static_supports
 import inspect
-from time import sleep
 from queue import Queue
 from utils import sample_save_image, sample_sync_func, Worker
 
 
 class Controller(object):
 
-    # 不同OJ爬虫的同步状态函数和替换图片url函数已经被抽象为统一的函数
+    # 😝不同OJ爬虫的同步状态函数和替换图片url函数已经被抽象为统一的函数
     def __init__(self, sync_func=sample_sync_func, image_func=sample_save_image):
         # 这个函数用来同步状态，必须为sync_func(status, *args, **kwargs) 形式
         args = inspect.getfullargspec(sync_func)[0]
@@ -29,8 +27,7 @@ class Controller(object):
         self.image_func = image_func
 
         self.queues = {}
-        # self.workers = {}   # 一个oj可能对应多个worker，{'poj': [instance1, instance2], 'hdu': [instance1]}
-        # self.workers = []   # 不需要知道具体哪个worker是哪个oj的，因为他们都只受queue的控制
+        # 一个oj可能对应多个worker，{'poj': [instance1, instance2], 'hdu': [instance1]}
         self.workers = {}
 
         for key in supports.keys():
@@ -52,7 +49,7 @@ class Controller(object):
         # 注意会清空之前的账号信息
         for oj_name, handle, password in accounts:
             if oj_name not in supports.keys():
-                return False, 'oj_name only supports: {}'.format(str(supports.keys()))
+                raise NotImplementedError('oj_name only supports: {}'.format(str(supports.keys())))
 
         # 先停止所有的worker
         self.stop()
@@ -65,8 +62,8 @@ class Controller(object):
         return True
 
     def add_task(self, oj_name, pid, source, lang, *args):
-        if oj_name not in self.queues:
-            return False, 'oj_name only supports: {}'.format(str(self.queues.keys()))
+        if oj_name not in supports.keys():
+            raise NotImplementedError('oj_name only supports: {}'.format(str(supports.keys())))
         self.queues[oj_name].put((pid, source, lang, *args))
 
     def start(self):
@@ -107,16 +104,14 @@ class Controller(object):
         self.queues = {}
         self.workers = {}
 
+    @staticmethod
+    def get_languages(oj_name):
+        if oj_name not in supports.keys():
+            raise NotImplementedError('oj_name only supports: {}'.format(str(supports.keys())))
+        return supports[oj_name].get_languages
 
-    def get_problem(self, pid):
-        return self.oj.get_problem(pid)
-
-    def get_compile_error_info(self, rid):
-        return self.oj.get_compile_error_info(rid)
-
-    @property
-    def get_languages(self):
-        return self.oj.get_languages
-
-
-
+    @staticmethod
+    def get_problem(oj_name, pid):
+        if oj_name not in supports.keys():
+            raise NotImplementedError('oj_name only supports: {}'.format(str(supports.keys())))
+        return static_supports[oj_name].get_problem(pid)

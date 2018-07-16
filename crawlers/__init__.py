@@ -10,4 +10,8 @@ supports = {
     'codeforces': Codeforces,
 }
 
-
+static_supports = {
+    'poj': POJ('static', 'static'),
+    'hdu': HDU('static', 'static'),
+    'codeforces': Codeforces('static', 'static'),
+}
