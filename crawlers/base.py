@@ -51,10 +51,6 @@ class OJ(object):
         raise NotImplementedError
 
     @property
-    def problem_fields(self):
-        raise NotImplementedError
-
-    @property
     def uncertain_result_status(self):
         raise NotImplementedError
 

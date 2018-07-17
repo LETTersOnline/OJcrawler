@@ -58,13 +58,6 @@ class HDU(OJ):
         }
 
     @property
-    def problem_fields(self):
-        return ['title', 'judge_os', 'time_limit', 'memory_limit', 'problem_type', 'origin',
-                'Problem Description', 'Input', 'Output', 'Hint', 'Source',
-                'Sample Input', 'Sample Output',
-                ]
-
-    @property
     def uncertain_result_status(self):
         # lower
         return ['queuing', 'compiling', 'running']

@@ -25,7 +25,7 @@ class Codeforces(OJ):
 
     def url_problem(self, cid: int, pid: str):
         # codeforces需要一个cid和一个pid来确定题目
-        return self.url_home + 'problemset/problem/{}' + pid
+        return self.url_home + 'problemset/problem/{}/{}'.format(cid, pid)
 
     @property
     def url_login(self):
