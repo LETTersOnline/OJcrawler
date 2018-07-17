@@ -149,9 +149,12 @@ class POJ(OJ):
                 memory_limit = {
                     'default': int(limits[2].contents[1].strip()[:-1]),
                 }
-                descriptions = []
+
                 samples_input = []
                 samples_output = []
+                descriptions = []
+                category = ''
+                tags = []
 
                 items = plm.find_next_siblings()
                 n = len(items)
@@ -163,6 +166,8 @@ class POJ(OJ):
                         samples_input.append(sub_content.text)
                     elif sub_title == 'Sample Output':
                         samples_output.append(sub_content.text)
+                    elif sub_title == 'Source':
+                        category = sub_content.text
                     else:
                         descriptions.append(
                             (sub_title,

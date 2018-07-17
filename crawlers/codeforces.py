@@ -23,10 +23,9 @@ class Codeforces(OJ):
     def url_home(self):
         return 'http://codeforces.com/'
 
-    def url_problem(self, pid: str):
-        # codeforces的pid需要是 num/char 形式，如：731/a 或 123/B (不区分大小写)
-        assert (pid.split('/')) == 2
-        return self.url_home + 'problemset/problem/' + pid
+    def url_problem(self, cid: int, pid: str):
+        # codeforces需要一个cid和一个pid来确定题目
+        return self.url_home + 'problemset/problem/{}' + pid
 
     @property
     def url_login(self):

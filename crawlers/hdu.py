@@ -159,9 +159,13 @@ class HDU(OJ):
                     'default': memory_default,
                     'java': memory_java,
                 }
-                descriptions = []
+
                 samples_input = []
                 samples_output = []
+                descriptions = []
+                category = ''
+                tags = []
+
                 # 题面
                 panel_titles = soup.find_all('div', {'class': 'panel_title'})
                 panel_contents = soup.find_all('div', {'class': 'panel_content'})
@@ -172,6 +176,8 @@ class HDU(OJ):
                         samples_input.append(panel_contents[i].text)
                     elif panel_titles[i].text == 'Sample Output':
                         samples_output.append(panel_contents[i].text)
+                    elif panel_titles[i].text == 'Source':
+                        category = panel_contents[i].text
                     else:
                         descriptions.append(
                             (panel_titles[i].text,

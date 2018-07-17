@@ -31,7 +31,7 @@ class OJ(object):
     def url_home(self):
         raise NotImplementedError
 
-    def url_problem(self, pid):
+    def url_problem(self, *args, **kwargs):
         raise NotImplementedError
 
     @property
@@ -82,12 +82,22 @@ class OJ(object):
         #   'default': 65536,
         # }
 
-        # Description, Input, Output, Samples, Hint
+        # Description, Input, Output, Samples, Hint, Source,
+
+        # 增加两个字段，一个是category，一个是tags
+        # 对于poj，将其source的text转为category；tags初始空，后期手动标注；
+        # 对于hdu，将其source的text转为category；tags初始空，后期手动标注；
+        # 对于codeforces，将其对应比赛名转为category；tags为problem tags；
+
+        # category默认为空字符串，且每个题目最多对应到一个确定的category
+        # 每个题目可以对应到多个tag, tags类型为list
 
         return ['title', 'problem_type', 'origin',
                 'time_limit', 'memory_limit',
                 'samples_input', 'samples_output',
                 'descriptions',
+                'category',
+                'tags',
                 ]
 
     # 以下为基础函数
