@@ -185,14 +185,14 @@ class HDU(OJ):
         else:
             return False, '获取题目：http方法错误，请检查网络后重试'
 
-    def submit_code(self, pid, source, lang):
+    def submit_code(self, source, lang, pid):
         if not self.is_login():
             success, info = self.login()
             if not success:
                 return False, info
         data = dict(
             problemid=pid,
-            language=self.get_languages[lang.upper()],
+            language=self.get_languages()[lang.upper()],
             usercode=source,
             check='0',
         )

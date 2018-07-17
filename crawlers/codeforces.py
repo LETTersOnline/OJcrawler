@@ -91,8 +91,8 @@ class Codeforces(OJ):
             logger.error('socket timed out\nURL: %s', url)
             return None
 
-    @property
-    def get_languages(self):
+    @staticmethod
+    def get_languages():
         return {
             'GNU GCC 5.1.0': '10',
             'GNU GCC C11 5.1.0': '43',
@@ -205,28 +205,75 @@ class Codeforces(OJ):
             memory_limit = {
                 'default': int(header.find('div', {'class': 'memory-limit'}).contents[1].split(' ')[0]) * 1024,
             }
+            samples_input = []
+            samples_output = []
+            descriptions = []
+            category = ''
+            tags = []
 
             append_html = self.append_html
 
-            descriptions = header.find_next_siblings('div')
-            html = []
-            for item in descriptions:
+            htmls = header.find_next_siblings('div')
+            for item in htmls:
                 temp = item.find('div', {'class': 'section-title'})
                 sub_title = temp.text if temp else ''
-                sub_content = ''.join([item.prettify() for item in temp.find_next_siblings()])
-                html.append((sub_title, sub_content))
+                sub_content = ''.join([str(item) for item in temp.find_next_siblings()])
+                if sub_title == 'Example':
+                    continue
+                descriptions.append(
+                    (sub_title, sub_content)
+                )
 
+            inputs = soup.find_all('div', {'class': 'input'})
+            outputs = soup.find_all('div', {'class': 'output'})
+            assert len(inputs) == len(outputs)
+            n = len(inputs)
+            for i in range(n):
+                samples_input.append(inputs[i].text)
+                samples_output.append(outputs[i].text)
 
+            category = soup.find('a', {'style': 'color: black'}).text
+            tag_htmls = soup.find_all('tag-box', {'style': 'font-size:1.2rem;'})
+            for tag_html in tag_htmls:
+                tags.append(tag_html.text)
+
+            compatible_data = {}
+            for key in self.compatible_problem_fields:
+                compatible_data[key] = eval(key)
+            return True, compatible_data
 
         elif ret is None:
             return False, '获取题目：http方法错误，请检查网络后重试'
         else:
             return False, '获取题目：不存在的题目'
 
+    def submit_code(self, source, lang, cid, pid):
+        if not self.is_login():
+            success, info = self.login()
+            if not success:
+                return False, info
 
-    def submit_code(self, pid, source, lang):
-        pass
+        problem_id = '{}{}'.format(cid, pid).upper()
+
+        self.get(self.url_submit)
+        submit_form = self.browser.get_form(class_='submit-form')
+        submit_form['submittedProblemCode'] = problem_id
+        submit_form['source'] = source
+        # TODO: 把cf的语言全部转为大写
+        submit_form['programTypeId'] = self.get_languages()[lang]
+        self.browser.submit_form(submit_form)
+        if self.browser.url == self.url_status[:-1]:
+            ok, info = self.get_result()
+            return (True, info['rid']) if ok else (False, '提交代码（获取提交id）：' + info)
+        elif self.url_submit in self.browser.url:
+            soup = BeautifulSoup(self.browser.response.content, 'html5lib')
+            info = soup.find('span', {'class': 'error for__source'}).text
+            return False, info
+        else:
+            return False, '提交代码：未知错误'
+
+
 
     def get_result(self):
-        pass
+        return True
 # cf和poj或者hdu有所不同，不同题目可能有限制提交的语言

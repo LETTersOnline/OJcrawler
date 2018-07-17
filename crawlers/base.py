@@ -148,7 +148,7 @@ class OJ(object):
     def get_problem(self, *args, **kwargs):
         raise NotImplementedError
 
-    def submit_code(self, pid, source, lang):
+    def submit_code(self, *args, **kwargs):
         # 返回 run id
         raise NotImplementedError
 
