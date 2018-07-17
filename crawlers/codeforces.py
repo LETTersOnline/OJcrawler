@@ -51,20 +51,9 @@ class Codeforces(OJ):
         }
 
     @property
-    def problem_fields(self):
-        return ['title', 'judge_os', 'time_limit', 'memory_limit', 'problem_type', 'origin',
-                'Problem Description', 'Input', 'Output', 'Hint', 'Source',
-                'Sample Input', 'Sample Output',
-                ]
-
-    @property
     def uncertain_result_status(self):
         # 注意这里不是完全相等而是in
         return ['running', 'in queue']
-
-    @property
-    def problem_sample_fields(self):
-        return None
 
     def get(self, url):
         try:

@@ -143,7 +143,7 @@ class OJ(object):
     def replace_image(self, html):
         raise NotImplementedError
 
-    def get_problem(self, pid):
+    def get_problem(self, *args, **kwargs):
         raise NotImplementedError
 
     def submit_code(self, pid, source, lang):
