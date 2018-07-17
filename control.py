@@ -113,6 +113,35 @@ class Controller(object):
         return static_supports[oj_name].get_languages
 
     @staticmethod
+    def get_basic_language(oj_name):
+        if oj_name not in supports.keys():
+            raise NotImplementedError('oj_name only supports: {}'.format(str(supports.keys())))
+        # 只考虑三种最基础的语言，用来在比赛当中避免选手根据源语言判断OJ来源
+        # c, c++, java
+        if oj_name == 'poj':
+            return {
+                'c': 'GCC',
+                'c++': 'G++',
+                'c++11': None,
+                'java': 'JAVA',
+            }
+        elif oj_name == 'hdu':
+            return {
+                'c': 'GCC',
+                'c++': 'G++',
+                'c++11': 'G++',
+                'java': 'JAVA',
+            }
+
+        elif oj_name == 'codeforces':
+            return {
+                'c': 'GNU GCC C11 5.1.0',
+                'c++': 'GNU G++11 5.1.0',
+                'c++11': 'GNU G++11 5.1.0',
+                'java': 'Java 1.8.0_162',
+            }
+
+    @staticmethod
     def get_problem(oj_name, pid):
         if oj_name not in supports.keys():
             raise NotImplementedError('oj_name only supports: {}'.format(str(supports.keys())))
