@@ -14,6 +14,21 @@ class Codeforces(OJ):
         super().__init__(handle, password, image_func)
 
         self.rb = RoboBrowser(parser='html5lib')
+        self.append_html = """
+            <!-- MathJax -->
+            <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+              tex2jax: {inlineMath: [['$$$','$$$']], displayMath: [['$$$$$$','$$$$$$']]}
+            });
+            </script>
+            <script type="text/javascript" async
+                    src="https://assets.codeforces.com/mathjax/MathJax.js?config=TeX-MML-AM_CHTML">
+            </script>
+            <!-- /MathJax -->
+        """
+        mathjax_url = 'https://assets.codeforces.com/mathjax/MathJax.js'
+        new_mathjax_url = self.image_func(mathjax_url, self.oj_name)
+        self.append_html = self.append_html.replace(mathjax_url, new_mathjax_url)
 
     @property
     def browser(self):
@@ -184,21 +199,15 @@ class Codeforces(OJ):
 
             origin = self.url_problem(cid, pid)
 
-            time_limit = int(float(header.find('div', {'class': 'time-limit'}).contents[1].split(' ')[0]) * 1000)
-            memory_limit = int(header.find('div', {'class': 'memory-limit'}).contents[1].split(' ')[0]) * 1024
+            time_limit = {
+                'default': int(float(header.find('div', {'class': 'time-limit'}).contents[1].split(' ')[0]) * 1000),
+            }
+            memory_limit = {
+                'default': int(header.find('div', {'class': 'memory-limit'}).contents[1].split(' ')[0]) * 1024,
+            }
 
-            mathjax_append_html = """
-                <!-- MathJax -->
-                <script type="text/x-mathjax-config">
-                MathJax.Hub.Config({
-                  tex2jax: {inlineMath: [['$$$','$$$']], displayMath: [['$$$$$$','$$$$$$']]}
-                });
-                </script>
-                <script type="text/javascript" async
-                        src="https://assets.codeforces.com/mathjax/MathJax.js?config=TeX-MML-AM_CHTML">
-                </script>
-                <!-- /MathJax -->
-            """
+            append_html = self.append_html
+
             descriptions = header.find_next_siblings('div')
             html = []
             for item in descriptions:

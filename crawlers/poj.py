@@ -138,6 +138,7 @@ class POJ(OJ):
                 origin = self.url_problem(pid)
                 time_limit = {
                     'default': int(limits[0].contents[1].strip()[:-2]),
+                    'java': 3 * int(limits[0].contents[1].strip()[:-2]),
                 }
                 memory_limit = {
                     'default': int(limits[2].contents[1].strip()[:-1]),
