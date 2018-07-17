@@ -66,12 +66,8 @@ class HDU(OJ):
 
     @property
     def uncertain_result_status(self):
+        # lower
         return ['queuing', 'compiling', 'running']
-
-    @property
-    def problem_sample_fields(self):
-        # 只需要text内容，并转为list存储
-        return ['Sample Input', 'Sample Output', ]
 
     def post(self, url, data):
         post_data = parse.urlencode(data).encode()
@@ -145,7 +141,12 @@ class HDU(OJ):
                 return False, soup.find('td', {'valign': 'middle'}).find('div').text
             else:
                 title = soup.find('h1', {'style': 'color:#1A5CC8'}).text
-                judge_os = 'Windows'
+
+                spj = soup.find('font', {'color': 'red'})
+                problem_type = 'special judge' if (spj and 'Special Judge' == spj.text) else 'regular'
+
+                origin = self.url_problem(pid)
+
                 limits = soup.find('span', {'style': 'font-family:Arial;font-size:12px;font-weight:bold;color:green'})
                 limits_list = limits.contents[0].split(' ')
                 time_java, time_default = [int(x) for x in limits_list[2].split('/')]
@@ -158,39 +159,29 @@ class HDU(OJ):
                     'default': memory_default,
                     'java': memory_java,
                 }
-                spj = soup.find('font', {'color': 'red'})
-                problem_type = 'special judge' if spj and 'Special Judge' == spj.text else 'regular'
-
+                descriptions = []
+                samples_input = []
+                samples_output = []
                 # 题面
-
                 panel_titles = soup.find_all('div', {'class': 'panel_title'})
                 panel_contents = soup.find_all('div', {'class': 'panel_content'})
                 assert len(panel_titles) == len(panel_contents)
-                n = len(panel_contents)
-                data = {}
+                n = len(panel_titles)
                 for i in range(n):
-                    if panel_titles[i].text in self.problem_sample_fields:
-                        if panel_titles[i].text in data:
-                            data[panel_titles[i].text].append(panel_contents[i].text)
-                        else:
-                            data[panel_titles[i].text] = [panel_contents[i].text]
+                    if panel_titles[i].text == 'Sample Input':
+                        samples_input.append(panel_contents[i].text)
+                    elif panel_titles[i].text == 'Sample Output':
+                        samples_output.append(panel_contents[i].text)
                     else:
-                        data[panel_titles[i].text] = self.replace_image(panel_contents[i].prettify())
-
-                compatible_data = {
-                    'title': title,
-                    'judge_os': judge_os,
-                    'time_limit': time_limit,
-                    'memory_limit': memory_limit,
-                    'problem_type': problem_type,
-                    'origin': self.url_problem(pid),
-                }
-                for key in data:
-                    if key in self.problem_fields:
-                        index = self.problem_fields.index(key)
-                        compatible_data[self.compatible_problem_fields[index]] = data[key]
+                        descriptions.append(
+                            (panel_titles[i].text,
+                             self.replace_image(str(panel_contents[i]))
+                             )
+                        )
+                compatible_data = {}
+                for key in self.compatible_problem_fields:
+                    compatible_data[key] = eval(key)
                 return True, compatible_data
-
         else:
             return False, '获取题目：http方法错误，请检查网络后重试'
 

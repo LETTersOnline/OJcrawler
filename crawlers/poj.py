@@ -79,8 +79,8 @@ class POJ(OJ):
         except timeout:
             logger.error('socket timed out\nURL: %s', url)
 
-    @property
-    def get_languages(self):
+    @staticmethod
+    def get_languages():
         # poj支持语言不太可能发生变化
         return {
             'G++': '0',
@@ -164,7 +164,11 @@ class POJ(OJ):
                     elif sub_title == 'Sample Output':
                         samples_output.append(sub_content.text)
                     else:
-                        descriptions.append((sub_title, str(sub_content)))
+                        descriptions.append(
+                            (sub_title,
+                             self.replace_image(str(sub_content))
+                             )
+                        )
 
                 compatible_data = {}
                 for key in self.compatible_problem_fields:

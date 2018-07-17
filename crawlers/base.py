@@ -90,11 +90,6 @@ class OJ(object):
                 'descriptions',
                 ]
 
-    @property
-    def problem_sample_fields(self):
-        # 只需要text内容，并转为list存储
-        raise NotImplementedError
-
     # 以下为基础函数
     def get(self, url):
         try:

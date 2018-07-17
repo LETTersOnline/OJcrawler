@@ -14,7 +14,6 @@ class Codeforces(OJ):
         super().__init__(handle, password, image_func)
 
         self.rb = RoboBrowser(parser='html5lib')
-        self.rb.open()
 
     @property
     def browser(self):

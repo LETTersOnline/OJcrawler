@@ -12,9 +12,9 @@ class Controller(object):
     def __init__(self, sync_func=sample_sync_func, image_func=sample_save_image):
         # 这个函数用来同步状态，必须为sync_func(status, *args, **kwargs) 形式
         args = inspect.getfullargspec(sync_func)[0]
-        if len(args) < 1 or args[0] != 'status':
-            raise ValueError('sync_func的第一个参数必须为status而不是{}, '
-                             'sample: sync_func(status, *args, **kwargs)'.format(args[0]))
+        if len(args) < 1 or args[0] != 'data':
+            raise ValueError('sync_func的第一个参数必须为data而不是{}, '
+                             'sample: sync_func(data, *args, **kwargs)'.format(args[0]))
 
         args = inspect.getfullargspec(image_func)[0]
         if len(args) != 2:
@@ -67,6 +67,8 @@ class Controller(object):
         self.queues[oj_name].put((pid, source, lang, *args))
 
     def start(self):
+        if not self.workers:
+            raise RuntimeError('you should init accounts first.')
         for key in self.workers:
             for worker in self.workers[key]:
                 worker.setDaemon(True)
@@ -108,7 +110,7 @@ class Controller(object):
     def get_languages(oj_name):
         if oj_name not in supports.keys():
             raise NotImplementedError('oj_name only supports: {}'.format(str(supports.keys())))
-        return supports[oj_name].get_languages
+        return static_supports[oj_name].get_languages
 
     @staticmethod
     def get_problem(oj_name, pid):
