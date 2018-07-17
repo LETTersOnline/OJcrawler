@@ -148,6 +148,7 @@ class POJ(OJ):
                 descriptions = []
                 category = ''
                 tags = []
+                append_html = ''
 
                 items = plm.find_next_siblings()
                 n = len(items)

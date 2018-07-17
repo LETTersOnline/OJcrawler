@@ -158,6 +158,7 @@ class HDU(OJ):
                 descriptions = []
                 category = ''
                 tags = []
+                append_html = ''
 
                 # 题面
                 panel_titles = soup.find_all('div', {'class': 'panel_title'})

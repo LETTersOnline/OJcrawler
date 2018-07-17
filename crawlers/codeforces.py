@@ -169,20 +169,23 @@ class Codeforces(OJ):
         saved_url = self.image_func(image_url, self.oj_name)
         return html[:stp] + saved_url + self.replace_image(html[edp:])
 
-    def get_problem(self, pid):
-        ret = self.get(self.url_problem(pid))
-        # pid 为 num/string 形式
-        num, string = pid.split('/')
+    def get_problem(self, cid, pid):
+        ret = self.get(self.url_problem(cid, pid))
 
         if ret:
             soup = BeautifulSoup(self.browser.response.content, 'html5lib')
             header = soup.find('div', {'class': 'header'})
-            title = header.find('div', {'class': 'title'}).text[len(string) + 1:].strip()
-            judge_os = 'Linux'
+            title = header.find('div', {'class': 'title'}).text[len(pid) + 1:].strip()
+
+            interactive = soup.find('span', {'class': 'tex-font-style-bf'})
+            problem_type = 'interactive' \
+                if (interactive and interactive.text == 'This is an interactive problem.') \
+                else 'special judge'
+
+            origin = self.url_problem(cid, pid)
+
             time_limit = int(float(header.find('div', {'class': 'time-limit'}).contents[1].split(' ')[0]) * 1000)
             memory_limit = int(header.find('div', {'class': 'memory-limit'}).contents[1].split(' ')[0]) * 1024
-            problem_type = 'special judge'
-            origin = self.url_problem(pid)
 
             mathjax_append_html = """
                 <!-- MathJax -->

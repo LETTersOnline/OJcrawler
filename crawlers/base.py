@@ -63,7 +63,6 @@ class OJ(object):
         # origin 为题目链接字符串
 
         # samples_input\output为list：
-        # samp
         # 注意某些samples可能没有输入或者没有输出
 
         # descriptions为所有描述，hint, source, 等内容的二元组有序列表，内容都为html源码，并替换了其中的image路径为本地路径
@@ -88,12 +87,15 @@ class OJ(object):
         # category默认为空字符串，且每个题目最多对应到一个确定的category
         # 每个题目可以对应到多个tag, tags类型为list
 
+        # 增加一个append_html项，可能有依赖的html样式或者mathjax配置等等
+
         return ['title', 'problem_type', 'origin',
                 'time_limit', 'memory_limit',
                 'samples_input', 'samples_output',
                 'descriptions',
                 'category',
                 'tags',
+                'append_html',
                 ]
 
     # 以下为基础函数
