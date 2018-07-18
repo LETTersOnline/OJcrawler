@@ -1,17 +1,17 @@
 # -*- coding: utf-8 -*-
 # Created by crazyX on 2018/7/12
-from crawlers import supports, static_supports
+from ojcrawler.crawlers import supports
 import inspect
 import json
 from queue import Queue
-from utils import sample_save_image, sample_sync_func, Worker, logger
+from ojcrawler.utils import sample_save_image, sample_sync_func, Worker, logger
 
 
 class Controller(object):
 
     # 😝不同OJ爬虫的同步状态函数和替换图片url函数已经被抽象为统一的函数
     def __init__(self, sync_func=sample_sync_func, image_func=sample_save_image):
-        # 这个函数用来同步状态，必须为sync_func(status, *args, **kwargs) 形式
+        # 这个函数用来同步状态，必须为sync_func(status, *args, **kwargs) 形式xw
         args = inspect.getfullargspec(sync_func)[0]
         if len(args) < 1 or args[0] != 'data':
             raise ValueError('sync_func的第一个参数必须为data而不是{}, '
@@ -31,9 +31,12 @@ class Controller(object):
         # 一个oj可能对应多个worker，{'poj': [instance1, instance2], 'hdu': [instance1]}
         self.workers = {}
 
+        self.static_supports = {}
+
         for key in supports.keys():
             self.queues[key] = Queue()
             self.workers[key] = []
+            self.static_supports[key] = supports[key]('static', 'static', image_func)
 
     def __del__(self):
         logger.info('正在停止workers')
@@ -125,11 +128,10 @@ class Controller(object):
         self.queues = {}
         self.workers = {}
 
-    @staticmethod
-    def get_languages(oj_name):
+    def get_languages(self, oj_name):
         if oj_name not in supports.keys():
             raise NotImplementedError('oj_name only supports: {}'.format(str(supports.keys())))
-        return static_supports[oj_name].get_languages()
+        return self.static_supports[oj_name].get_languages()
 
     @staticmethod
     def get_basic_language(oj_name):
@@ -160,8 +162,7 @@ class Controller(object):
                 'java': 'Java 1.8.0_162',
             }
 
-    @staticmethod
-    def get_problem(oj_name, pid):
+    def get_problem(self, oj_name, pid):
         if oj_name not in supports.keys():
             raise NotImplementedError('oj_name only supports: {}'.format(str(supports.keys())))
-        return static_supports[oj_name].get_problem(pid)
+        return self.static_supports[oj_name].get_problem(pid)

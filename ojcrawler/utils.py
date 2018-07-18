@@ -1,7 +1,7 @@
-from crawlers.config import *
-from crawlers import supports
+from ojcrawler.crawlers.config import *
+from ojcrawler.crawlers import supports
 from queue import Queue
-import random, threading, time
+import threading
 from time import sleep
 import json
 

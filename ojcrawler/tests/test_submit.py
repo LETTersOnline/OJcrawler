@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Created by crazyX on 2018/7/7
 
-from control import Controller
+from ojcrawler.control import Controller
 
 import unittest
 import os

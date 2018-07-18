@@ -6,9 +6,9 @@ from bs4 import BeautifulSoup
 from urllib import request, parse
 from urllib.error import URLError, HTTPError
 
-from crawlers.base import OJ
-from crawlers.config import logger, save_image
-from crawlers.config import HTTP_METHOD_TIMEOUT
+from ojcrawler.crawlers.base import OJ
+from ojcrawler.crawlers.config import logger, save_image
+from ojcrawler.crawlers.config import HTTP_METHOD_TIMEOUT
 
 
 class POJ(OJ):

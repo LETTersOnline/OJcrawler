@@ -1,6 +1,5 @@
 .idea/*
-crawlers/statics/*
-crawlers/older/*.json
+ojcrawler/crawlers/statics/*
 statics/*
 
 # Byte-compiled / optimized / DLL files

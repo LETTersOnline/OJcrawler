@@ -77,9 +77,15 @@ RESULT_COUNT = os.getenv('RESULT_COUNT', 20)
 RESULT_INTERVAL = os.getenv('RESULT_INTERVAL', 1)
 ```
 
+安装：切换到setup.py所在目录下：
+```
+python setup.py build
+python setup.py install
+```
+
 考虑开发成pip包的形式, 所以如下方式引入：
 
-`from OJcrawler.control import Controller`
+`from ojcrawler.control import Controller`
 
 
 一些操作示范：

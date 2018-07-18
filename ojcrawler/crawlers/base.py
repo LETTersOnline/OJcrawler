@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 # Created by crazyX on 2018/7/8
-import uuid
 from socket import timeout
 from urllib.error import URLError, HTTPError
-from crawlers.config import logger, save_image
-from crawlers.config import HTTP_METHOD_TIMEOUT
+from ojcrawler.crawlers.config import logger
+from ojcrawler.crawlers.config import HTTP_METHOD_TIMEOUT
 
 
 class OJ(object):
