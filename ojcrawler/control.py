@@ -4,7 +4,7 @@ from ojcrawler.crawlers import supports
 import inspect
 import json
 from queue import Queue
-from ojcrawler.utils import sample_save_image, sample_sync_func, Worker, logger
+from ojcrawler.utils import sample_save_image, sample_sync_func, Worker
 
 
 class Controller(object):
@@ -39,9 +39,9 @@ class Controller(object):
             self.static_supports[key] = supports[key]('static', 'static', image_func)
 
     def __del__(self):
-        logger.info('正在停止workers')
+        print('正在停止workers')
         self.stop()
-        logger.info('停止成功')
+        print('停止成功')
 
     @staticmethod
     def supports():
