@@ -58,21 +58,9 @@ class POJ(OJ):
         }
 
     @property
-    def problem_fields(self):
-        return ['title', 'judge_os', 'time_limit', 'memory_limit', 'problem_type', 'origin',
-                'Description', 'Input', 'Output', 'Hint', 'Source',
-                'Sample Input', 'Sample Output',
-                ]
-
-    @property
     def uncertain_result_status(self):
         # lower
         return ['running & judging', 'compiling', 'waiting']
-
-    @property
-    def problem_sample_fields(self):
-        # 只需要text内容，并转为list存储
-        return ['Sample Input', 'Sample Output', ]
 
     def post(self, url, data):
         post_data = parse.urlencode(data).encode()
@@ -84,8 +72,8 @@ class POJ(OJ):
         except timeout:
             logger.error('socket timed out\nURL: %s', url)
 
-    @property
-    def get_languages(self):
+    @staticmethod
+    def get_languages():
         # poj支持语言不太可能发生变化
         return {
             'G++': '0',
@@ -123,7 +111,6 @@ class POJ(OJ):
             return False
 
     def replace_image(self, html):
-        # TODO: check if all works
         pos = html.find('<img src=')
         if pos == -1:
             return html
@@ -144,65 +131,59 @@ class POJ(OJ):
                 return False, soup.find('li').text
             else:
                 title = soup.find('div', {'class': 'ptt'}).text
-                judge_os = 'Linux'
-                limits = soup.find('div', {'class': 'plm'}).find_all('td')
+                plm = soup.find('div', {'class': 'plm'})
+                limits = plm.find_all('td')
+                problem_type = 'special judge' if 'Special Judge' in [x.text for x in limits] else 'regular'
+                origin = self.url_problem(pid)
                 time_limit = {
                     'default': int(limits[0].contents[1].strip()[:-2]),
+                    'java': 3 * int(limits[0].contents[1].strip()[:-2]),
                 }
                 memory_limit = {
                     'default': int(limits[2].contents[1].strip()[:-1]),
                 }
-                problem_type = 'special judge' if 'Special Judge' in [x.text for x in limits] else 'regular'
 
-                table = soup.find('table', {'background': 'images/table_back.jpg'})
+                samples_input = []
+                samples_output = []
+                descriptions = []
+                category = ''
+                tags = []
+                append_html = ''
 
-                # 这个一定是 Description
-                sub_title = table.find('p')
-                sub_content = sub_title.find_next_sibling()
-                data = {sub_title.text: self.replace_image(sub_content.prettify())}
-
-                while sub_title:
-                    sub_title = sub_content.find_next_sibling()
-                    if not sub_title:
-                        break
-                    sub_content = sub_title.find_next_sibling()
-                    sub_title_text = str(sub_title.text).strip()
-                    if sub_title_text == '':
-                        continue
-                    if sub_title.find_parent().name != 'td':
-                        break
-                    if sub_title_text in self.problem_sample_fields:
-                        if sub_title_text in data:
-                            data[sub_title_text].append(sub_content.text)
-                        else:
-                            data[sub_title_text] = [sub_content.text]
+                items = plm.find_next_siblings()
+                n = len(items)
+                assert n % 2 == 0
+                for i in range(0, n, 2):
+                    sub_title = items[i].text.strip()
+                    sub_content = items[i + 1]
+                    if sub_title == 'Sample Input':
+                        samples_input.append(sub_content.text)
+                    elif sub_title == 'Sample Output':
+                        samples_output.append(sub_content.text)
+                    elif sub_title == 'Source':
+                        category = sub_content.text
                     else:
-                        data[sub_title_text] = self.replace_image(sub_content.prettify())
+                        descriptions.append(
+                            (sub_title,
+                             self.replace_image(str(sub_content))
+                             )
+                        )
 
-                compatible_data = {
-                    'title': title,
-                    'judge_os': judge_os,
-                    'time_limit': time_limit,
-                    'memory_limit': memory_limit,
-                    'problem_type': problem_type,
-                    'origin': self.url_problem(pid),
-                }
-                for key in data:
-                    if key in self.problem_fields:
-                        index = self.problem_fields.index(key)
-                        compatible_data[self.compatible_problem_fields[index]] = data[key]
+                compatible_data = {}
+                for key in self.compatible_problem_fields:
+                    compatible_data[key] = eval(key)
                 return True, compatible_data
         else:
             return False, '获取题目：http方法错误，请检查网络后重试'
 
-    def submit_code(self, pid, source, lang):
+    def submit_code(self, source, lang, pid):
         if not self.is_login():
             success, info = self.login()
             if not success:
                 return False, info
         data = dict(
             problem_id=pid,
-            language=self.get_languages[lang.upper()],
+            language=self.get_languages()[lang.upper()],
             source=source,
             submit='Submit',
             encoded='0',
@@ -242,7 +223,11 @@ class POJ(OJ):
                     'status': trs[1].contents[3].text.strip(),
                     'memory': trs[1].contents[4].text.strip(),
                     'time': trs[1].contents[5].text.strip(),
+                    'ce_info': '',
                 }
+                if data['status'] == 'Compile Error':
+                    ret, info = self.get_compile_error_info(data['rid'])
+                    data['ce_info'] = info if ret else ''
                 return True, data
         else:
             return False, '获取结果：http方法错误，请检查网络后重试'

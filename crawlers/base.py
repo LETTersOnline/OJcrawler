@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Created by crazyX on 2018/7/8
+import uuid
 from socket import timeout
 from urllib.error import URLError, HTTPError
 from crawlers.config import logger, save_image
@@ -8,7 +9,7 @@ from crawlers.config import HTTP_METHOD_TIMEOUT
 
 class OJ(object):
     # 每一个账号同一时间只考虑交一道题目，这样可以有效避免查封，且方便处理
-
+    # image_func 用来做网页中图片的url替换
     def __init__(self, handle, password, image_func):
         self.handle = handle
         self.password = password
@@ -19,7 +20,7 @@ class OJ(object):
 
     @property
     def oj_name(self):
-        return self.__class__.__name__
+        return self.__class__.__name__.lower()
 
     # 以下为基础属性
     @property
@@ -30,7 +31,7 @@ class OJ(object):
     def url_home(self):
         raise NotImplementedError
 
-    def url_problem(self, pid):
+    def url_problem(self, *args, **kwargs):
         raise NotImplementedError
 
     @property
@@ -50,21 +51,22 @@ class OJ(object):
         raise NotImplementedError
 
     @property
-    def problem_fields(self):
-        raise NotImplementedError
-
-    @property
     def uncertain_result_status(self):
         raise NotImplementedError
 
     @property
     def compatible_problem_fields(self):
+        # title 为标题，字符串
         # time limit 数字，单位为 ms
         # memory limit 数字，单位为 kb
+        # problem_type为字符串，表示题目类型，默认为'regular', 可选为'special judge'，'interactive'等
         # origin 为题目链接字符串
-        # input/output sample 为有序列表，长度相同
-        # 三个description和hint，source为html源码，并替换了其中的image路径为本地路径
-        # 其余为字符串
+
+        # samples_input\output为list：
+        # 注意某些samples可能没有输入或者没有输出
+
+        # descriptions为所有描述，hint, source, 等内容的二元组有序列表，内容都为html源码，并替换了其中的image路径为本地路径
+        # [(sub_title1, html1), (sub_title2, html2), ...]
 
         # 需要额外考虑一下针对不同语言的不同的time limit和memory limit
         # time_limit = {
@@ -75,17 +77,26 @@ class OJ(object):
         #   'default': 65536,
         # }
 
-        # problem_type为字符串，表示题目类型，默认为'regular', 可选为'special judge'等
+        # Description, Input, Output, Samples, Hint, Source,
 
-        return ['title', 'judge_os', 'time_limit', 'memory_limit', 'problem_type', 'origin',
-                'description', 'input_description', 'output_description', 'hint', 'source',
-                'input_sample', 'output_sample',
+        # 增加两个字段，一个是category，一个是tags
+        # 对于poj，将其source的text转为category；tags初始空，后期手动标注；
+        # 对于hdu，将其source的text转为category；tags初始空，后期手动标注；
+        # 对于codeforces，将其对应比赛名转为category；tags为problem tags；
+
+        # category默认为空字符串，且每个题目最多对应到一个确定的category
+        # 每个题目可以对应到多个tag, tags类型为list
+
+        # 增加一个append_html项，可能有依赖的html样式或者mathjax配置等等
+
+        return ['title', 'problem_type', 'origin',
+                'time_limit', 'memory_limit',
+                'samples_input', 'samples_output',
+                'descriptions',
+                'category',
+                'tags',
+                'append_html',
                 ]
-
-    @property
-    def problem_sample_fields(self):
-        # 只需要text内容，并转为list存储
-        raise NotImplementedError
 
     # 以下为基础函数
     def get(self, url):
@@ -110,13 +121,8 @@ class OJ(object):
         response = self.get(self.url_home)
         return self.http_status_code(response) == 200
 
-    # 以下为OJ行为函数
     @staticmethod
-    def batch_register(self):
-        pass
-
-    @property
-    def get_languages(self):
+    def get_languages():
         # 获取语言列表
         # example:
         # LANGUAGE = {
@@ -139,10 +145,10 @@ class OJ(object):
     def replace_image(self, html):
         raise NotImplementedError
 
-    def get_problem(self, pid):
+    def get_problem(self, *args, **kwargs):
         raise NotImplementedError
 
-    def submit_code(self, pid, source, lang):
+    def submit_code(self, *args, **kwargs):
         # 返回 run id
         raise NotImplementedError
 

@@ -4,9 +4,20 @@
 from control import Controller
 
 import unittest
+import os
 
 
 class Test(unittest.TestCase):
+
+    def setUp(self):
+        self.ctl = Controller()
+        self.ctl.load_accounts_json(os.path.join(os.getcwd(), 'accounts_sample.json'))
+
+    def test_submit(self):
+        pass
+        # self.crawler_hdu()
+        # self.crawler_poj()
+        # self.crawler_cf()
 
     def test_crawler_hdu(self):
         pid = 1000
@@ -31,9 +42,10 @@ class Test(unittest.TestCase):
             return 0;
         }
         '''
-        ctl = Controller('hdu', 'USTBVJ', 'USTBVJ')
-        ctl.run(pid, ac_src, lang)
-        ctl.run(pid, wa_src, lang)
+        self.ctl.add_task('hdu', ac_src, lang, pid)
+        self.ctl.add_task('hdu', wa_src, lang, pid)
+        import time
+        time.sleep(5)
 
     def test_crawler_poj(self):
         pid = 1000
@@ -58,13 +70,14 @@ class Test(unittest.TestCase):
             return 0;
         }
         '''
-        ctl = Controller('poj', 'USTBVJ', 'USTBVJ')
-        ctl.run(pid, ac_src, lang)
-        ctl.run(pid, wa_src, lang)
+        self.ctl.add_task('poj', ac_src, lang, pid)
+        self.ctl.add_task('poj', wa_src, lang, pid)
+        import time
+        time.sleep(20)
 
     def test_crawler_cf(self):
         pid = '1A'
-        lang = 'g++'
+        lang = 'GNU G++11 5.1.0'
         src = '''
         #include <iostream>
         using namespace std;
@@ -79,6 +92,9 @@ class Test(unittest.TestCase):
             //fuck you you
         }
         '''
+        self.ctl.add_task('codeforces', src, lang, pid)
+        import time
+        time.sleep(20)
 
 
 if __name__ == '__main__':

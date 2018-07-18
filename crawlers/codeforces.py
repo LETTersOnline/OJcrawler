@@ -14,7 +14,21 @@ class Codeforces(OJ):
         super().__init__(handle, password, image_func)
 
         self.rb = RoboBrowser(parser='html5lib')
-        self.rb.open()
+        self.append_html = """
+            <!-- MathJax -->
+            <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+              tex2jax: {inlineMath: [['$$$','$$$']], displayMath: [['$$$$$$','$$$$$$']]}
+            });
+            </script>
+            <script type="text/javascript" async
+                    src="https://assets.codeforces.com/mathjax/MathJax.js?config=TeX-MML-AM_CHTML">
+            </script>
+            <!-- /MathJax -->
+        """
+        mathjax_url = 'http://assets.codeforces.com/mathjax/MathJax.js'
+        new_mathjax_url = self.image_func(mathjax_url, self.oj_name)
+        self.append_html = self.append_html.replace(mathjax_url, new_mathjax_url)
 
     @property
     def browser(self):
@@ -24,10 +38,9 @@ class Codeforces(OJ):
     def url_home(self):
         return 'http://codeforces.com/'
 
-    def url_problem(self, pid: str):
-        # codeforces的pid需要是 num/char 形式，如：731/a 或 123/B (不区分大小写)
-        assert (pid.split('/')) == 2
-        return self.url_home + 'problemset/problem/' + pid
+    def url_problem(self, cid, pid):
+        # codeforces需要一个cid和一个pid来确定题目
+        return self.url_home + 'problemset/problem/{}/{}'.format(cid, pid)
 
     @property
     def url_login(self):
@@ -53,20 +66,9 @@ class Codeforces(OJ):
         }
 
     @property
-    def problem_fields(self):
-        return ['title', 'judge_os', 'time_limit', 'memory_limit', 'problem_type', 'origin',
-                'Problem Description', 'Input', 'Output', 'Hint', 'Source',
-                'Sample Input', 'Sample Output',
-                ]
-
-    @property
     def uncertain_result_status(self):
         # 注意这里不是完全相等而是in
         return ['running', 'in queue']
-
-    @property
-    def problem_sample_fields(self):
-        return None
 
     def get(self, url):
         try:
@@ -89,8 +91,8 @@ class Codeforces(OJ):
             logger.error('socket timed out\nURL: %s', url)
             return None
 
-    @property
-    def get_languages(self):
+    @staticmethod
+    def get_languages():
         return {
             'GNU GCC 5.1.0': '10',
             'GNU GCC C11 5.1.0': '43',
@@ -182,52 +184,166 @@ class Codeforces(OJ):
         saved_url = self.image_func(image_url, self.oj_name)
         return html[:stp] + saved_url + self.replace_image(html[edp:])
 
-    def get_problem(self, pid):
-        ret = self.get(self.url_problem(pid))
-        # pid 为 num/string 形式
-        num, string = pid.split('/')
+    def get_problem(self, cpid):
+        cid, pid = self.split_pid(cpid)
+        ret = self.get(self.url_problem(cid, pid))
 
         if ret:
             soup = BeautifulSoup(self.browser.response.content, 'html5lib')
             header = soup.find('div', {'class': 'header'})
-            title = header.find('div', {'class': 'title'}).text[len(string) + 1:].strip()
-            judge_os = 'Linux'
-            time_limit = int(float(header.find('div', {'class': 'time-limit'}).contents[1].split(' ')[0]) * 1000)
-            memory_limit = int(header.find('div', {'class': 'memory-limit'}).contents[1].split(' ')[0]) * 1024
-            problem_type = 'special judge'
-            origin = self.url_problem(pid)
+            title = header.find('div', {'class': 'title'}).text[len(pid) + 1:].strip()
 
-            mathjax_append_html = """
-                <!-- MathJax -->
-                <script type="text/x-mathjax-config">
-                MathJax.Hub.Config({
-                  tex2jax: {inlineMath: [['$$$','$$$']], displayMath: [['$$$$$$','$$$$$$']]}
-                });
-                </script>
-                <script type="text/javascript" async
-                        src="https://assets.codeforces.com/mathjax/MathJax.js?config=TeX-MML-AM_CHTML">
-                </script>
-                <!-- /MathJax -->
-            """
-            descriptions = header.find_next_siblings('div')
-            html = []
-            for item in descriptions:
+            interactive = soup.find('span', {'class': 'tex-font-style-bf'})
+            problem_type = 'interactive' \
+                if (interactive and interactive.text == 'This is an interactive problem.') \
+                else 'special judge'
+
+            origin = self.url_problem(cid, pid)
+
+            time_limit = {
+                'default': int(float(header.find('div', {'class': 'time-limit'}).contents[1].split(' ')[0]) * 1000),
+            }
+            memory_limit = {
+                'default': int(header.find('div', {'class': 'memory-limit'}).contents[1].split(' ')[0]) * 1024,
+            }
+            samples_input = []
+            samples_output = []
+            descriptions = []
+            category = ''
+            tags = []
+
+            append_html = self.append_html
+
+            htmls = header.find_next_siblings('div')
+            for item in htmls:
                 temp = item.find('div', {'class': 'section-title'})
                 sub_title = temp.text if temp else ''
-                sub_content = ''.join([item.prettify() for item in temp.find_next_siblings()])
-                html.append((sub_title, sub_content))
+                sub_content = ''.join([str(item) for item in temp.find_next_siblings()])
+                if sub_title == 'Example':
+                    continue
+                descriptions.append(
+                    (sub_title, sub_content)
+                )
 
+            inputs = soup.find_all('div', {'class': 'input'})
+            outputs = soup.find_all('div', {'class': 'output'})
+            assert len(inputs) == len(outputs)
+            n = len(inputs)
+            for i in range(n):
+                samples_input.append(inputs[i].text)
+                samples_output.append(outputs[i].text)
 
+            category = soup.find('a', {'style': 'color: black'}).text
+            tag_htmls = soup.find_all('tag-box', {'style': 'font-size:1.2rem;'})
+            for tag_html in tag_htmls:
+                tags.append(tag_html.text)
+
+            compatible_data = {}
+            for key in self.compatible_problem_fields:
+                compatible_data[key] = eval(key)
+            return True, compatible_data
 
         elif ret is None:
             return False, '获取题目：http方法错误，请检查网络后重试'
         else:
             return False, '获取题目：不存在的题目'
 
+    @staticmethod
+    def split_pid(cid: str):
+        """
+        将cf的cid拆分成可用的形式，到第一个非数字字符为止
+        :param cid: '123A', '342c2'
+        :return: cid, pid
+        """
+        n = len(cid)
+        for i in range(n):
+            if not cid[i].isdigit():
+                return cid[:i], cid[i:]
+        return cid, ''
 
-    def submit_code(self, pid, source, lang):
-        pass
+    def submit_code(self, source, lang, cpid):
+        if not self.is_login():
+            success, info = self.login()
+            if not success:
+                return False, info
+        cid, pid = self.split_pid(cpid)
+
+        problem_id = '{}{}'.format(cid, pid).upper()
+
+        ret = self.get(self.url_submit)
+        if ret:
+            submit_form = self.browser.get_form(class_='submit-form')
+            submit_form['submittedProblemCode'] = problem_id
+            submit_form['source'] = source
+
+            # 注意这儿的语言不是全大写
+            submit_form['programTypeId'] = self.get_languages()[lang]
+            self.browser.submit_form(submit_form)
+            if self.browser.url == self.url_status[:-1]:
+                ok, info = self.get_result()
+                return (True, info['rid']) if ok else (False, '提交代码（获取提交id）：' + info)
+            elif self.url_submit in self.browser.url:
+                soup = BeautifulSoup(self.browser.response.content, 'html5lib')
+                info = soup.find('span', {'class': 'error for__source'}).text
+                return False, info
+            else:
+                return False, '提交代码：未知错误1'
+        elif ret is None:
+            return False, '提交代码：http方法错误，请检查网络后重试'
+        else:
+            return False, '提交代码：未知错误2'
 
     def get_result(self):
-        pass
-# cf和poj或者hdu有所不同，不同题目可能有限制提交的语言
+        # 只找最新的
+        url = 'http://codeforces.com/submissions/{}'.format(self.handle)
+        ret = self.get(url)
+        if ret:
+            soup = BeautifulSoup(self.browser.response.content, 'html5lib')
+            table = soup.find('table', {'class': 'status-frame-datatable'})
+            trs = table.find_all('tr')
+            if len(trs) <= 1:
+                return False, '没有结果'
+            data = {
+                'rid': trs[1].contents[1].text.strip(),
+                'status': trs[1].contents[11].text.strip(),
+                'time': trs[1].contents[13].text.strip().split('\xa0')[0],
+                'memory': trs[1].contents[15].text.strip().split('\xa0')[0],
+                'ce_info': '',
+            }
+            if data['status'] == 'Compilation error':
+                ret, info = self.get_compile_error_info(data['rid'])
+                data['ce_info'] = info if ret else ''
+            return True, data
+
+        elif ret is None:
+            return False, '获取结果：http方法错误，请检查网络后重试'
+        else:
+            return False, '获取结果：未知错误2'
+
+    def get_result_by_rid(self, rid):
+        ret, dat = self.get_result()
+        if ret:
+            if dat['rid'] != rid:
+                info = 'rid not matched! ({}!={}), CF不支持使用rid寻找提交结果'.format(rid, dat['rid'])
+                logger.error(info)
+                return False, info
+            else:
+                return ret, dat
+        else:
+            return ret, dat
+
+    def get_compile_error_info(self, rid):
+        ret = self.get(self.url_status)
+        if ret:
+            soup = BeautifulSoup(self.browser.response.content, 'html5lib')
+            csrf = soup.find('meta', {'name': 'X-Csrf-Token'}).attrs['content']
+            url = 'http://codeforces.com/data/judgeProtocol'
+            data = {'submissionId': rid, 'csrf_token': csrf}
+            self.post(url, data)
+            soup = BeautifulSoup(self.browser.response.content, 'html5lib')
+            info = eval(soup.text)
+            return (True, info) if info else (False, '')
+        elif ret is None:
+            return False, '获取编译错误信息：http方法错误，请检查网络后重试'
+        else:
+            return False, '获取编译错误信息：未知错误2'

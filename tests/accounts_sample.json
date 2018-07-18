@@ -1,0 +1,20 @@
+{
+  "hdu": [
+    {
+      "handle": "handle",
+      "password": "password"
+    },
+  ],
+  "poj": [
+    {
+      "handle": "handle",
+      "password": "password"
+    }
+  ],
+  "codeforces": [
+    {
+      "handle": "handle",
+      "password": "password"
+    }
+  ]
+}

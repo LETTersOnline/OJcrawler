@@ -9,7 +9,10 @@ logFile = 'crawler.log'
 my_handler = RotatingFileHandler(logFile, mode='a', maxBytes=5 * 1024 * 1024,
                                  backupCount=2, encoding=None, delay=0)
 
-logging.basicConfig(level=logging.DEBUG,
+formatter = logging.Formatter('%(name)s: %(asctime)s [%(module)s:%(funcName)s] [%(levelname)s]- %(message)s')
+my_handler.setFormatter(formatter)
+
+logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s [%(threadName)s:%(thread)d] [%(name)s:%(lineno)d]'
                            ' [%(module)s:%(funcName)s] [%(levelname)s]- %(message)s',
                     datefmt='%m-%d %H:%M',
@@ -25,9 +28,9 @@ DEBUG = True
 if DEBUG:
     # define a Handler which writes INFO messages or higher to the sys.stderr
     console = logging.StreamHandler()
-    console.setLevel(logging.DEBUG)
+    console.setLevel(logging.INFO)
     # set a format which is simpler for console use
-    formatter = logging.Formatter('%(name)s: %(asctime)s [%(module)s:%(funcName)s] [%(levelname)s]- %(message)s')
+
     # tell the handler to use this format
     console.setFormatter(formatter)
     # add the handler to the root logger
@@ -61,6 +64,8 @@ def save_image(image_url, oj_name):
     if not os.path.exists(image_folder):
         os.makedirs(image_folder)
     path = os.path.join(image_folder, file_name)
+    if os.path.exists(path):
+        return STATIC_OJ_URL + oj_name + '/' + file_name
 
     req = urllib.request.Request(image_url)
     resp = urllib.request.urlopen(req)
