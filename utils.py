@@ -103,7 +103,12 @@ class Worker(threading.Thread, metaclass=SingletonOJHandle):
                     if success:
                         status = info['status']
                         if status != pre_status:
-                            if str(status).lower() in self.oj.uncertain_result_status:
+                            # 注意codeforces
+                            established = True
+                            for uncertain_status in self.oj.uncertain_result_status:
+                                if str(status).lower() in uncertain_status:
+                                    established = False
+                            if not established:
                                 info['established'] = False
                                 self.sync_func(info, args)
                                 pre_status = status

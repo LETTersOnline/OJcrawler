@@ -40,6 +40,10 @@ class Controller(object):
         self.stop()
         logger.info('停止成功')
 
+    @staticmethod
+    def supports():
+        return supports.keys()
+
     def _add_account(self, oj_name, handle, password):
         # 同一个oj重复handle只会采用第一个的配置
         worker = Worker(oj_name, handle, password, self.queues[oj_name], self.image_func, self.sync_func)
@@ -76,10 +80,10 @@ class Controller(object):
             self._add_account(oj_name, handle, password)
         return True
 
-    def add_task(self, oj_name, pid, source, lang, *args):
+    def add_task(self, oj_name, source, lang, pid, *args):
         if oj_name not in supports.keys():
             raise NotImplementedError('oj_name only supports: {}'.format(str(supports.keys())))
-        self.queues[oj_name].put((pid, source, lang, *args))
+        self.queues[oj_name].put((source, lang, pid, *args))
 
     def start(self):
         if not self.workers:
@@ -125,7 +129,7 @@ class Controller(object):
     def get_languages(oj_name):
         if oj_name not in supports.keys():
             raise NotImplementedError('oj_name only supports: {}'.format(str(supports.keys())))
-        return static_supports[oj_name].get_languages
+        return static_supports[oj_name].get_languages()
 
     @staticmethod
     def get_basic_language(oj_name):
