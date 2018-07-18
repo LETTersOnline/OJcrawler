@@ -20,7 +20,7 @@ class OJ(object):
 
     @property
     def oj_name(self):
-        return self.__class__.__name__
+        return self.__class__.__name__.lower()
 
     # 以下为基础属性
     @property

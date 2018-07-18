@@ -26,7 +26,7 @@ class Codeforces(OJ):
             </script>
             <!-- /MathJax -->
         """
-        mathjax_url = 'https://assets.codeforces.com/mathjax/MathJax.js'
+        mathjax_url = 'http://assets.codeforces.com/mathjax/MathJax.js'
         new_mathjax_url = self.image_func(mathjax_url, self.oj_name)
         self.append_html = self.append_html.replace(mathjax_url, new_mathjax_url)
 
@@ -38,7 +38,7 @@ class Codeforces(OJ):
     def url_home(self):
         return 'http://codeforces.com/'
 
-    def url_problem(self, cid: int, pid: str):
+    def url_problem(self, cid, pid):
         # codeforces需要一个cid和一个pid来确定题目
         return self.url_home + 'problemset/problem/{}/{}'.format(cid, pid)
 
@@ -184,7 +184,8 @@ class Codeforces(OJ):
         saved_url = self.image_func(image_url, self.oj_name)
         return html[:stp] + saved_url + self.replace_image(html[edp:])
 
-    def get_problem(self, cid, pid):
+    def get_problem(self, cpid):
+        cid, pid = self.split_pid(cpid)
         ret = self.get(self.url_problem(cid, pid))
 
         if ret:
@@ -247,11 +248,25 @@ class Codeforces(OJ):
         else:
             return False, '获取题目：不存在的题目'
 
-    def submit_code(self, source, lang, cid, pid):
+    @staticmethod
+    def split_pid(cid: str):
+        """
+        将cf的cid拆分成可用的形式，到第一个非数字字符为止
+        :param cid: '123A', '342c2'
+        :return: cid, pid
+        """
+        n = len(cid)
+        for i in range(n):
+            if not cid[i].isdigit():
+                return cid[:i], cid[i:]
+        return cid, ''
+
+    def submit_code(self, source, lang, cpid):
         if not self.is_login():
             success, info = self.login()
             if not success:
                 return False, info
+        cid, pid = self.split_pid(cpid)
 
         problem_id = '{}{}'.format(cid, pid).upper()
 
@@ -260,7 +275,8 @@ class Codeforces(OJ):
             submit_form = self.browser.get_form(class_='submit-form')
             submit_form['submittedProblemCode'] = problem_id
             submit_form['source'] = source
-            # TODO: 把cf的语言全部转为大写
+
+            # 注意这儿的语言不是全大写
             submit_form['programTypeId'] = self.get_languages()[lang]
             self.browser.submit_form(submit_form)
             if self.browser.url == self.url_status[:-1]:
@@ -288,10 +304,10 @@ class Codeforces(OJ):
             if len(trs) <= 1:
                 return False, '没有结果'
             data = {
-                'rid': trs[1].contents[0].text.strip(),
-                'status': trs[1].contents[5].text.strip(),
-                'time': trs[1].contents[6].text.strip().split('\xa0')[0],
-                'memory': trs[1].contents[7].text.strip().split('\xa0')[0],
+                'rid': trs[1].contents[1].text.strip(),
+                'status': trs[1].contents[11].text.strip(),
+                'time': trs[1].contents[13].text.strip().split('\xa0')[0],
+                'memory': trs[1].contents[15].text.strip().split('\xa0')[0],
                 'ce_info': '',
             }
             if data['status'] == 'Compilation error':

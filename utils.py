@@ -78,8 +78,14 @@ class Worker(threading.Thread, metaclass=SingletonOJHandle):
             self.__flag.wait()  # 为True时立即返回, 为False时阻塞直到内部的标识位为True后返回
             item = self.queue.get()
             if item:
-                pid, source, lang, args = item
-                success, dat = self.oj.submit_code(pid, source, lang)
+                # 注意处理cf的pid
+                # cf的pid应该为 123A 之类的形式
+                # 内部会将其拆分
+                source = item[0]
+                lang = item[1]
+                pid = item[2]
+                args = item[3:]
+                success, dat = self.oj.submit_code(source, lang, pid)
                 if not success:
                     logger.warning('{} - {}'.format(self.oj.oj_name, dat))
                     # 注意如果处理失败，应该再次放入队列

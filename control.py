@@ -2,8 +2,9 @@
 # Created by crazyX on 2018/7/12
 from crawlers import supports, static_supports
 import inspect
+import json
 from queue import Queue
-from utils import sample_save_image, sample_sync_func, Worker
+from utils import sample_save_image, sample_sync_func, Worker, logger
 
 
 class Controller(object):
@@ -35,7 +36,9 @@ class Controller(object):
             self.workers[key] = []
 
     def __del__(self):
+        logger.info('正在停止workers')
         self.stop()
+        logger.info('停止成功')
 
     def _add_account(self, oj_name, handle, password):
         # 同一个oj重复handle只会采用第一个的配置
@@ -43,6 +46,18 @@ class Controller(object):
         # 可能是已经存在的实例
         if worker not in self.workers[oj_name]:
             self.workers[oj_name].append(worker)
+            worker.start()
+
+    def load_accounts_json(self, json_path):
+        with open(json_path) as fp:
+            json_data = json.load(fp)
+        accounts = []
+        for oj_name in json_data:
+            if oj_name not in supports.keys():
+                raise NotImplementedError('oj_name only supports: {}'.format(str(supports.keys())))
+            for item in json_data[oj_name]:
+                accounts.append((oj_name, item['handle'], item['password']))
+        self.init_accounts(accounts)
 
     def init_accounts(self, accounts):
         # 初始化account信息，注意不能用重复的信息初始化

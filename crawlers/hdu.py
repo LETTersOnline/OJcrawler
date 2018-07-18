@@ -226,8 +226,8 @@ class HDU(OJ):
                 data = {
                     'rid': trs[1].contents[0].text.strip(),
                     'status': trs[1].contents[2].text.strip(),
-                    'time': trs[1].contents[4].text.strip(),
-                    'memory': trs[1].contents[5].text.strip(),
+                    'time': int(trs[1].contents[4].text.strip()[:-2]),
+                    'memory': int(trs[1].contents[5].text.strip()[:-1]),
                     'ce_info': '',
                 }
                 if data['status'] == 'Compilation Error':

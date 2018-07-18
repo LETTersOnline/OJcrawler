@@ -111,7 +111,6 @@ class POJ(OJ):
             return False
 
     def replace_image(self, html):
-        # TODO: check if all works
         pos = html.find('<img src=')
         if pos == -1:
             return html
