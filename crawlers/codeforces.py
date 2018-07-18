@@ -255,25 +255,79 @@ class Codeforces(OJ):
 
         problem_id = '{}{}'.format(cid, pid).upper()
 
-        self.get(self.url_submit)
-        submit_form = self.browser.get_form(class_='submit-form')
-        submit_form['submittedProblemCode'] = problem_id
-        submit_form['source'] = source
-        # TODO: 把cf的语言全部转为大写
-        submit_form['programTypeId'] = self.get_languages()[lang]
-        self.browser.submit_form(submit_form)
-        if self.browser.url == self.url_status[:-1]:
-            ok, info = self.get_result()
-            return (True, info['rid']) if ok else (False, '提交代码（获取提交id）：' + info)
-        elif self.url_submit in self.browser.url:
-            soup = BeautifulSoup(self.browser.response.content, 'html5lib')
-            info = soup.find('span', {'class': 'error for__source'}).text
-            return False, info
+        ret = self.get(self.url_submit)
+        if ret:
+            submit_form = self.browser.get_form(class_='submit-form')
+            submit_form['submittedProblemCode'] = problem_id
+            submit_form['source'] = source
+            # TODO: 把cf的语言全部转为大写
+            submit_form['programTypeId'] = self.get_languages()[lang]
+            self.browser.submit_form(submit_form)
+            if self.browser.url == self.url_status[:-1]:
+                ok, info = self.get_result()
+                return (True, info['rid']) if ok else (False, '提交代码（获取提交id）：' + info)
+            elif self.url_submit in self.browser.url:
+                soup = BeautifulSoup(self.browser.response.content, 'html5lib')
+                info = soup.find('span', {'class': 'error for__source'}).text
+                return False, info
+            else:
+                return False, '提交代码：未知错误1'
+        elif ret is None:
+            return False, '提交代码：http方法错误，请检查网络后重试'
         else:
-            return False, '提交代码：未知错误'
-
-
+            return False, '提交代码：未知错误2'
 
     def get_result(self):
-        return True
-# cf和poj或者hdu有所不同，不同题目可能有限制提交的语言
+        # 只找最新的
+        url = 'http://codeforces.com/submissions/{}'.format(self.handle)
+        ret = self.get(url)
+        if ret:
+            soup = BeautifulSoup(self.browser.response.content, 'html5lib')
+            table = soup.find('table', {'class': 'status-frame-datatable'})
+            trs = table.find_all('tr')
+            if len(trs) <= 1:
+                return False, '没有结果'
+            data = {
+                'rid': trs[1].contents[0].text.strip(),
+                'status': trs[1].contents[5].text.strip(),
+                'time': trs[1].contents[6].text.strip().split('\xa0')[0],
+                'memory': trs[1].contents[7].text.strip().split('\xa0')[0],
+                'ce_info': '',
+            }
+            if data['status'] == 'Compilation error':
+                ret, info = self.get_compile_error_info(data['rid'])
+                data['ce_info'] = info if ret else ''
+            return True, data
+
+        elif ret is None:
+            return False, '获取结果：http方法错误，请检查网络后重试'
+        else:
+            return False, '获取结果：未知错误2'
+
+    def get_result_by_rid(self, rid):
+        ret, dat = self.get_result()
+        if ret:
+            if dat['rid'] != rid:
+                info = 'rid not matched! ({}!={}), CF不支持使用rid寻找提交结果'.format(rid, dat['rid'])
+                logger.error(info)
+                return False, info
+            else:
+                return ret, dat
+        else:
+            return ret, dat
+
+    def get_compile_error_info(self, rid):
+        ret = self.get(self.url_status)
+        if ret:
+            soup = BeautifulSoup(self.browser.response.content, 'html5lib')
+            csrf = soup.find('meta', {'name': 'X-Csrf-Token'}).attrs['content']
+            url = 'http://codeforces.com/data/judgeProtocol'
+            data = {'submissionId': rid, 'csrf_token': csrf}
+            self.post(url, data)
+            soup = BeautifulSoup(self.browser.response.content, 'html5lib')
+            info = eval(soup.text)
+            return (True, info) if info else (False, '')
+        elif ret is None:
+            return False, '获取编译错误信息：http方法错误，请检查网络后重试'
+        else:
+            return False, '获取编译错误信息：未知错误2'
