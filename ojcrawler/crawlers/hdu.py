@@ -144,17 +144,16 @@ class HDU(OJ):
                 limits_list = limits.contents[0].split(' ')
                 time_java, time_default = [int(x) for x in limits_list[2].split('/')]
                 memory_java, memory_default = [int(x) for x in limits_list[6].split('/')]
-                time_limit = {
-                    'default': time_default,
-                    'java': time_java,
-                }
-                memory_limit = {
-                    'default': memory_default,
-                    'java': memory_java,
+
+                limits = {
+                    'default': (time_default, memory_default),
+                    'java': (time_java, memory_java),
                 }
 
                 samples_input = []
                 samples_output = []
+                samples = {}
+
                 descriptions = []
                 category = ''
                 tags = []
@@ -178,6 +177,11 @@ class HDU(OJ):
                              self.replace_image(str(panel_contents[i]))
                              )
                         )
+                assert len(samples_input) == len(samples_output)
+                n = len(samples_input)
+                for i in range(n):
+                    samples[i + 1] = (samples_input[i], samples_output[i])
+
                 compatible_data = {}
                 for key in self.compatible_problem_fields:
                     compatible_data[key] = eval(key)

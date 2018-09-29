@@ -89,8 +89,10 @@ class OJ(object):
         # 增加一个append_html项，可能有依赖的html样式或者mathjax配置等等
 
         return ['title', 'problem_type', 'origin',
-                'time_limit', 'memory_limit',
-                'samples_input', 'samples_output',
+                'limits',
+                'samples',
+                # 'time_limit', 'memory_limit',
+                # 'samples_input', 'samples_output',
                 'descriptions',
                 'category',
                 'tags',

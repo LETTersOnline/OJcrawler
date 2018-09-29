@@ -64,7 +64,7 @@ sample即第一种方式，这个函数会传入两个参数，一个是源oj的
 调用`Controller.load_accounts_json(json_path)`将会从对应路径的json文件中读取账号信息，参考tests/accounts_sample.json的格式。
 
 
-有三个环境变量可以配置，配置方式如下：
+有五个环境变量可以配置，配置方式如下：
 ```python
 import os
 # 超时秒数
@@ -75,12 +75,23 @@ RESULT_COUNT = os.getenv('RESULT_COUNT', 20)
 
 # 每两次获取结果之间间隔 / s
 RESULT_INTERVAL = os.getenv('RESULT_INTERVAL', 1)
+
+# 静态目录
+STATIC_OJ_ROOT = os.getenv('STATIC_OJ_ROOT', '/home/')
+
+# 静态url
+STATIC_OJ_URL = os.getenv('STATIC_OJ_URL', 'localhost:8000/statics/')
 ```
 
 安装：切换到setup.py所在目录下：
 ```
 python setup.py build
 python setup.py install
+```
+
+打包发布：
+```
+python setup.py sdist
 ```
 
 考虑开发成pip包的形式, 所以如下方式引入：
@@ -99,10 +110,8 @@ python setup.py install
     'title': 'Edge', 
     'problem_type': 'regular', 
     'origin': 'http://acm.hdu.edu.cn/showproblem.php?pid=1033', 
-    'time_limit': {'default': 1000, 'java': 2000}, 
-    'memory_limit': {'default': 32768, 'java': 65536}, 
-    'samples_input': ['V\nAVV'], 
-    'samples_output': ['300 420 moveto\n310 420 lineto\n310 430 lineto\nstroke\nshowpage\n300 420 moveto\n310 420 lineto\n310 410 lineto\n320 410 lineto\n320 420 lineto\nstroke\nshowpage'], 
+    'limits': {'java': (2000, 65536), 'default': (1000, 32768)},
+    'samples': {1: ('V\nAVV', '300 420 moveto\n310 420 lineto\n310 430 lineto\nstroke\nshowpage\n300 420 moveto\n310 420 lineto\n310 410 lineto\n320 410 lineto\n320 420 lineto\nstroke\nshowpage')},
     'descriptions': [
         ('Problem Description', '<div class="panel_content">For products that are wrapped in small packings it is necessary that the sheet of paper containing the directions for use is folded until its size becomes small enough. We assume that a sheet of paper is rectangular and only folded along lines parallel to its initially shorter edge. The act of folding along such a line, however, can be performed in two directions: either the surface on the top of the sheet is brought together, or the surface on its bottom. In both cases the two parts of the rectangle that are separated by the folding line are laid together neatly and we ignore any differences in thickness of the resulting folded sheet. <br/>After several such folding steps have been performed we may unfold the sheet again and take a look at its longer edge holding the sheet so that it appears as a one-dimensional curve, actually a concatenation of line segments. If we move along this curve in a fixed direction we can classify every place where the sheet was folded as either type A meaning a clockwise turn or type V meaning a counter-clockwise turn. Given such a sequence of classifications, produce a drawing of the longer edge of the sheet assuming 90 degree turns at equidistant places.<br/></div>'), 
         ('Input', '<div class="panel_content">The input contains several test cases, each on a separate line. Each line contains a nonempty string of characters A and V describing the longer edge of the sheet. You may assume that the length of the string is less than 200. The input file terminates immediately after the last test case.<br/></div>'), 
@@ -121,3 +130,6 @@ dict_keys(['poj', 'hdu', 'codeforces'])
 >>> c.get_basic_language('poj') # 查看基础的四种语言或配置在poj的中的映射
 {'c': 'GCC', 'c++': 'G++', 'c++11': None, 'java': 'JAVA'}
 ```
+
+获取的limits当中，first为时间限制，单位为ms，second为内存限制，单位为kb
+获取的samples当中，first为输入，second为输出

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='ojcrawler',
-    version='1.0.3',
+    version='1.1.0',
     packages=find_packages(),
     url='https://github.com/LETTersOnline/ojcrawler',
     license='MIT',

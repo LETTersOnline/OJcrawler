@@ -135,16 +135,17 @@ class POJ(OJ):
                 limits = plm.find_all('td')
                 problem_type = 'special judge' if 'Special Judge' in [x.text for x in limits] else 'regular'
                 origin = self.url_problem(pid)
-                time_limit = {
-                    'default': int(limits[0].contents[1].strip()[:-2]),
-                    'java': 3 * int(limits[0].contents[1].strip()[:-2]),
-                }
-                memory_limit = {
-                    'default': int(limits[2].contents[1].strip()[:-1]),
+                limits = {
+                    'default': (int(limits[0].contents[1].strip()[:-2]),
+                                int(limits[2].contents[1].strip()[:-1])),
+                    'java': (3 * int(limits[0].contents[1].strip()[:-2]),
+                             int(limits[2].contents[1].strip()[:-1])),
                 }
 
                 samples_input = []
                 samples_output = []
+                samples = {}
+
                 descriptions = []
                 category = ''
                 tags = []
@@ -168,6 +169,11 @@ class POJ(OJ):
                              self.replace_image(str(sub_content))
                              )
                         )
+
+                assert len(samples_input) == len(samples_output)
+                n = len(samples_input)
+                for i in range(n):
+                    samples[i + 1] = (samples_input[i], samples_output[i])
 
                 compatible_data = {}
                 for key in self.compatible_problem_fields:

@@ -2,7 +2,6 @@ from logging.handlers import RotatingFileHandler
 import os
 import urllib
 import urllib.request
-import pathlib
 import logging
 
 logFile = 'crawler.log'
@@ -50,9 +49,11 @@ RESULT_COUNT = os.getenv('RESULT_COUNT', 20)
 # 每两次获取结果之间间隔 / s
 RESULT_INTERVAL = os.getenv('RESULT_INTERVAL', 1)
 
+# 静态目录
+STATIC_OJ_ROOT = os.getenv('STATIC_OJ_ROOT', '/home/')
 
-STATIC_OJ_ROOT = os.path.join(pathlib.Path(__file__).parent, 'statics')
-STATIC_OJ_URL = 'localhost:8000/statics/'
+# 静态url
+STATIC_OJ_URL = os.getenv('STATIC_OJ_URL', 'localhost:8000/statics/')
 
 
 def save_image(image_url, oj_name):

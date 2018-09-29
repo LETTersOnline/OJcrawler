@@ -200,14 +200,13 @@ class Codeforces(OJ):
 
             origin = self.url_problem(cid, pid)
 
-            time_limit = {
-                'default': int(float(header.find('div', {'class': 'time-limit'}).contents[1].split(' ')[0]) * 1000),
+            limits = {
+                'default': (int(float(header.find('div', {'class': 'time-limit'}).contents[1].split(' ')[0]) * 1000),
+                            int(header.find('div', {'class': 'memory-limit'}).contents[1].split(' ')[0]) * 1024),
             }
-            memory_limit = {
-                'default': int(header.find('div', {'class': 'memory-limit'}).contents[1].split(' ')[0]) * 1024,
-            }
-            samples_input = []
-            samples_output = []
+
+            samples = {}
+
             descriptions = []
             category = ''
             tags = []
@@ -218,7 +217,10 @@ class Codeforces(OJ):
             for item in htmls:
                 temp = item.find('div', {'class': 'section-title'})
                 sub_title = temp.text if temp else ''
-                sub_content = ''.join([str(item) for item in temp.find_next_siblings()])
+                if sub_title == '':
+                    sub_content = str(item)
+                else:
+                    sub_content = ''.join([str(item) for item in temp.find_next_siblings()])
                 if sub_title == 'Example':
                     continue
                 descriptions.append(
@@ -230,8 +232,13 @@ class Codeforces(OJ):
             assert len(inputs) == len(outputs)
             n = len(inputs)
             for i in range(n):
-                samples_input.append(inputs[i].text)
-                samples_output.append(outputs[i].text)
+                input_html = inputs[i].find('pre')
+                for br in input_html.find_all('br'):
+                    br.replace_with("\n")
+                output_html = outputs[i].find('pre')
+                for br in output_html.find_all('br'):
+                    br.replace_with("\n")
+                samples[i + 1] = (input_html.text, output_html.text)
 
             category = soup.find('a', {'style': 'color: black'}).text
             tag_htmls = soup.find_all('tag-box', {'style': 'font-size:1.2rem;'})
