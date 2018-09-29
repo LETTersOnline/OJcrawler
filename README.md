@@ -92,6 +92,7 @@ python setup.py install
 打包发布：
 ```
 python setup.py sdist
+twine upload dist/*
 ```
 
 考虑开发成pip包的形式, 所以如下方式引入：
