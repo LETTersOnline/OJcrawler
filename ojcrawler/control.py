@@ -108,14 +108,14 @@ class Controller(object):
                 assert type(worker) == Worker
                 worker.stop()
 
-        for key in self.queues.keys():
-            cnt = len(self.workers[key])
-            for i in range(cnt):
-                self.queues[key].put(None)
-
-        for key in self.workers:
-            for worker in self.workers[key]:
-                worker.join()
+        # for key in self.queues.keys():
+        #     cnt = len(self.workers[key])
+        #     for i in range(cnt):
+        #         self.queues[key].put(None)
+        #
+        # for key in self.workers:
+        #     for worker in self.workers[key]:
+        #         worker.join()
 
         # 清空worker和队列内存
         for queue in self.queues.values():

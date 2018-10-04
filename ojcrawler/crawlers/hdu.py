@@ -127,7 +127,8 @@ class HDU(OJ):
     def get_problem(self, pid):
         ret = self.get(self.url_problem(pid))
         if ret:
-            html = ret.read().decode('gbk')
+            html = ret.read()
+            # 不需要decode，交给BeautifulSoup处理
             soup = BeautifulSoup(html, 'html5lib')
             msg_png = soup.find('img', {'src': '/images/msg.png'})
             if msg_png:
@@ -207,7 +208,7 @@ class HDU(OJ):
                 ok, info = self.get_result()
                 return (True, info['rid']) if ok else (False, '提交代码（获取提交id）：' + info)
             elif ret.url == self.url_submit:
-                html = ret.read().decode('gbk')
+                html = ret.read()
                 soup = BeautifulSoup(html, 'html5lib')
                 return False, soup.find('div', {'style': 'color:red; font-size:12px'}).text
             else:
@@ -219,7 +220,7 @@ class HDU(OJ):
         # 获取url_result下的第一个结果
         ret = self.get(url_result)
         if ret:
-            html = ret.read().decode('gbk')
+            html = ret.read()
             soup = BeautifulSoup(html, 'html5lib')
             table = soup.find('table', {'class': 'table_text'})
             trs = table.find_all('tr')
@@ -257,7 +258,7 @@ class HDU(OJ):
         url = self.url_home + 'viewerror.php?rid={}'.format(rid)
         ret = self.get(url)
         if ret:
-            html = ret.read().decode('gbk')
+            html = ret.read()
             soup = BeautifulSoup(html, 'html5lib')
             title = soup.find('h1')
             if title.text == 'View Compilation Error':

@@ -63,11 +63,11 @@ class Worker(threading.Thread, metaclass=SingletonOJHandle):
         self.__flag.set()  # 设置为True, 让线程停止阻塞
 
     def stop(self):
-        # stop的时候存在一个问题，由于中间还需要从queue中获取数据，如果queue已经为空，run函数
-        # 会阻塞在queue.get()函数处，永远无法退出，所以控制器退出的时候需要往queue中push Worker
-        # 个数的None
-
-        self.__flag.set()  # 将线程从暂停状态恢复, 如何已经暂停的话
+        # # stop的时候存在一个问题，由于中间还需要从queue中获取数据，如果queue已经为空，run函数
+        # # 会阻塞在queue.get()函数处，永远无法退出，所以控制器退出的时候需要往queue中push Worker
+        # # 个数的None
+        #
+        # self.__flag.set()  # 将线程从暂停状态恢复, 如何已经暂停的话
         self.__running.clear()  # 设置为False
 
     # 队列中的信息：
@@ -75,7 +75,7 @@ class Worker(threading.Thread, metaclass=SingletonOJHandle):
     # *args, **kwargs和sync_func中保持一致
     def run(self):
         while self.__running.isSet():
-            self.__flag.wait()  # 为True时立即返回, 为False时阻塞直到内部的标识位为True后返回
+            # self.__flag.wait()  # 为True时立即返回, 为False时阻塞直到内部的标识位为True后返回
             item = self.queue.get()
             if item:
                 # 注意处理cf的pid
@@ -121,3 +121,4 @@ class Worker(threading.Thread, metaclass=SingletonOJHandle):
 
                 if not fetch_success:
                     self.sync_func({'status': 'fetch failed', 'established': False}, args)
+            self.queue.task_done()

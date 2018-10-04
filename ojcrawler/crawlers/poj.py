@@ -116,7 +116,7 @@ class POJ(OJ):
             return html
         end_pos = html[pos:].find('>')
         left = pos + 10
-        right = pos + end_pos - 1
+        right = pos + end_pos - 2
         image_url = self.url_home + html[left:right]
         saved_url = self.image_func(image_url, self.oj_name)
         return html[:left] + saved_url + self.replace_image(html[right:])

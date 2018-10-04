@@ -241,9 +241,9 @@ class Codeforces(OJ):
                 samples[i + 1] = (input_html.text, output_html.text)
 
             category = soup.find('a', {'style': 'color: black'}).text
-            tag_htmls = soup.find_all('tag-box', {'style': 'font-size:1.2rem;'})
+            tag_htmls = soup.find_all('span', {'class': 'tag-box'})
             for tag_html in tag_htmls:
-                tags.append(tag_html.text)
+                tags.append(tag_html.text.strip())
 
             compatible_data = {}
             for key in self.compatible_problem_fields:
