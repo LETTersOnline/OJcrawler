@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 # Created by crazyX on 2018/7/14
+from __future__ import *
+
 from bs4 import BeautifulSoup
 from robobrowser import RoboBrowser
 from socket import timeout
-from urllib.error import URLError, HTTPError
+from six.moves.urllib.error import HTTPError, URLError
 from ojcrawler.crawlers.base import OJ
 from ojcrawler.crawlers.config import logger, save_image
 from ojcrawler.crawlers.config import HTTP_METHOD_TIMEOUT
@@ -11,7 +13,7 @@ from ojcrawler.crawlers.config import HTTP_METHOD_TIMEOUT
 
 class Codeforces(OJ):
     def __init__(self, handle, password, image_func=save_image):
-        super().__init__(handle, password, image_func)
+        super(Codeforces, self).__init__(handle, password, image_func)
 
         self.rb = RoboBrowser(parser='html5lib')
         self.append_html = """
@@ -256,7 +258,7 @@ class Codeforces(OJ):
             return False, '获取题目：不存在的题目'
 
     @staticmethod
-    def split_pid(cid: str):
+    def split_pid(cid):
         """
         将cf的cid拆分成可用的形式，到第一个非数字字符为止
         :param cid: '123A', '342c2'
@@ -328,6 +330,7 @@ class Codeforces(OJ):
             return False, '获取结果：未知错误2'
 
     def get_result_by_rid(self, rid):
+        # TODO: add get result by rid support
         ret, dat = self.get_result()
         if ret:
             if dat['rid'] != rid:

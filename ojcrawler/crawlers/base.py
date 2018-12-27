@@ -1,10 +1,22 @@
 # -*- coding: utf-8 -*-
 # Created by crazyX on 2018/7/8
+# noinspection PyUnresolvedReferences
+from __future__ import *
+
 from socket import timeout
-from urllib.error import URLError, HTTPError
+
+from six.moves.urllib.error import HTTPError, URLError
+
 from ojcrawler.crawlers.config import logger
 from ojcrawler.crawlers.config import HTTP_METHOD_TIMEOUT
 
+
+class NetWorkException(RuntimeError):
+    pass
+
+
+class CrawlerException(SystemError):
+    pass
 
 class OJ(object):
     # 每一个账号同一时间只考虑交一道题目，这样可以有效避免查封，且方便处理

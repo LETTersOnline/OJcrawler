@@ -7,10 +7,13 @@
 - [codeforces](http://codeforces.com/)
 
 ## 架构
-生产者消费者模型
+~~生产者消费者模型~~
 
-对于每个账号，生成对应的`worker`，`Controller`和`worker`间通过每个oj对应的`queue`通信，`worker`从`queue`中按顺序获取`source, lang, pid, *args`参数，这些参数都由`Controller.add_task(oj_name, source, lang, pid, *args)`放入对应oj的队列当中
+~~对于每个账号，生成对应的`worker`，`Controller`和`worker`间通过每个oj对应的`queue`通信，`worker`从`queue`中按顺序获取`source, lang, pid, *args`参数，这些参数都由`Controller.add_task(oj_name, source, lang, pid, *args)`放入对应oj的队列当中~~
 
+去除内置队列模型，每次直接调用接口获取题目或者提交
+
+使用者需要自己控制好每个账号只会在一个control实例中，否则将会获取到意料之外的结果
 其中：
 - oj_name: oj名称缩写，目前支持['hdu', 'poj', 'codeforces']
 - source：源代码
@@ -23,6 +26,7 @@ Controller实例化的时候可以额外传入两个函数，以下分别介绍�
 ### 同步状态(sync_func)
 sample：
 ```python
+# coding=utf-8
 import json
 import logging as logger
 def sample_sync_func(data, *args):
@@ -66,6 +70,7 @@ sample即第一种方式，这个函数会传入两个参数，一个是源oj的
 
 有五个环境变量可以配置，配置方式如下：
 ```python
+# coding=utf-8
 import os
 # 超时秒数
 HTTP_METHOD_TIMEOUT = os.getenv('HTTP_METHOD_TIMEOUT', 10)

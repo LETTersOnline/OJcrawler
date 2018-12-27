@@ -3,3 +3,6 @@ requests
 robobrowser
 beautifulsoup4
 html5lib
+future
+six
+http

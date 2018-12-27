@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 # Created by crazyX on 2018/7/13
+# noinspection PyUnresolvedReferences
+from __future__ import *
+
 from socket import timeout
-from http import cookiejar
+
+
 from bs4 import BeautifulSoup
-from urllib import request, parse
-from urllib.error import URLError, HTTPError
+from six.moves.urllib import request, parse
+from six.moves.urllib.error import HTTPError, URLError
+from six.moves.http_cookiejar import CookieJar
 
 from ojcrawler.crawlers.base import OJ
 from ojcrawler.crawlers.config import logger, save_image
@@ -13,10 +18,10 @@ from ojcrawler.crawlers.config import HTTP_METHOD_TIMEOUT
 
 class HDU(OJ):
     def __init__(self, handle, password, image_func=save_image):
-        super().__init__(handle, password, image_func)
+        super(HDU, self).__init__(handle, password, image_func)
 
         # 声明一个CookieJar对象实例来保存cookie
-        cookie = cookiejar.CookieJar()
+        cookie = CookieJar()
         # 利用urllib2库的HTTPCookieProcessor对象来创建cookie处理器
         handler = request.HTTPCookieProcessor(cookie)
         # 通过handler来构建opener

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='ojcrawler',
-    version='1.1.6',
+    version='2.0.0',
     packages=find_packages(),
     url='https://github.com/LETTersOnline/ojcrawler',
     license='MIT',
@@ -15,6 +15,7 @@ setup(
     long_description=long_description,
     install_requires=['psutil', 'requests', 'robobrowser', 'beautifulsoup4', 'html5lib'],
     classifiers=[
+        "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",

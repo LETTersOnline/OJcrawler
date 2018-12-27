@@ -1,7 +1,10 @@
+# coding=utf-8
+from __future__ import *
+
 from logging.handlers import RotatingFileHandler
 import os
-import urllib
-import urllib.request
+
+from six.moves import urllib
 import logging
 
 logFile = 'crawler.log'
@@ -47,7 +50,7 @@ HTTP_METHOD_TIMEOUT = os.getenv('HTTP_METHOD_TIMEOUT', 10)
 RESULT_COUNT = os.getenv('RESULT_COUNT', 20)
 
 # 每两次获取结果之间间隔 / s
-RESULT_INTERVAL = os.getenv('RESULT_INTERVAL', 1)
+RESULT_INTERVAL = os.getenv('RESULT_INTERVAL', 2)
 
 # 静态目录
 STATIC_OJ_ROOT = os.getenv('STATIC_OJ_ROOT', '/home/')
