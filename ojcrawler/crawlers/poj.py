@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Created by crazyX on 2018/7/8
-from __future__ import *
+from __future__ import (absolute_import, division, print_function)
 
 from socket import timeout
 from bs4 import BeautifulSoup

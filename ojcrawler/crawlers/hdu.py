@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Created by crazyX on 2018/7/13
-# noinspection PyUnresolvedReferences
-from __future__ import *
+from __future__ import (absolute_import, division, print_function)
 
 from socket import timeout
 
@@ -26,6 +25,10 @@ class HDU(OJ):
         handler = request.HTTPCookieProcessor(cookie)
         # 通过handler来构建opener
         self.opener = request.build_opener(handler)
+        headers = []
+        for key in self.http_headers:
+            headers.append((key, self.http_headers[key]))
+        self.opener.addheaders = headers
         # 此处的open方法同urllib2的urlopen方法，也可以传入request
 
     @property
@@ -54,9 +57,7 @@ class HDU(OJ):
     @property
     def http_headers(self):
         return {
-            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                          'Ubuntu Chromium/52.0.2743.116 Chrome/52.0.2743.116 Safari/537.36',
-            'Origin': "http://acm.hdu.edu.cn",
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',
             'Host': "acm.hdu.edu.cn",
             'Content-Type': 'application/x-www-form-urlencoded',
             'Connection': 'keep-alive',

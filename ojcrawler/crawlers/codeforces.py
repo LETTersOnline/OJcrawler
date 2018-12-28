@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Created by crazyX on 2018/7/14
-from __future__ import *
+from __future__ import (absolute_import, division, print_function)
 
 from bs4 import BeautifulSoup
 from robobrowser import RoboBrowser

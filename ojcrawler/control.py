@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Created by crazyX on 2018/7/12
 # noinspection PyUnresolvedReferences
-from __future__ import *
+from __future__ import (absolute_import, division, print_function)
 
 from ojcrawler.crawlers import supports
 import inspect
