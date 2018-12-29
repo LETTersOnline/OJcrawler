@@ -2,16 +2,18 @@
 # Created by crazyX on 2018/7/7
 
 from ojcrawler.control import Controller
-
+import json
 import unittest
 import os
 
+data = json.load(open(os.path.join(os.getcwd(), 'accounts.json')))
 
 class Test(unittest.TestCase):
 
     def setUp(self):
         self.ctl = Controller()
-        self.ctl.load_accounts_json(os.path.join(os.getcwd(), 'accounts_sample.json'))
+        for oj_name in data:
+            self.ctl.update_account(oj_name, data[oj_name]['handle'], data[oj_name]['password'])
 
     def test_submit(self):
         pass
@@ -42,10 +44,8 @@ class Test(unittest.TestCase):
             return 0;
         }
         '''
-        self.ctl.add_task('hdu', ac_src, lang, pid)
-        self.ctl.add_task('hdu', wa_src, lang, pid)
-        import time
-        time.sleep(5)
+        self.ctl.submit_code('hdu', ac_src, lang, pid)
+        self.ctl.submit_code('hdu', wa_src, lang, pid)
 
     def test_crawler_poj(self):
         pid = 1000
@@ -70,10 +70,8 @@ class Test(unittest.TestCase):
             return 0;
         }
         '''
-        self.ctl.add_task('poj', ac_src, lang, pid)
-        self.ctl.add_task('poj', wa_src, lang, pid)
-        import time
-        time.sleep(20)
+        self.ctl.submit_code('poj', ac_src, lang, pid)
+        self.ctl.submit_code('poj', wa_src, lang, pid)
 
     def test_crawler_cf(self):
         pid = '1A'
@@ -83,18 +81,16 @@ class Test(unittest.TestCase):
         using namespace std;
         int n,m,a;
         long long x,y;
+        hello ce
         int main() {
             cin>>n>>m>>a;
             x=n/a+(n%a==0?0:1);
-            y=m/a+(m%a==0?0:1);//sadjiowdqwdw
+            y=m/a+(m%a==0?0:1);
             cout<<x*y<<endl;
             return 0;
-            //fuck you you
         }
         '''
-        self.ctl.add_task('codeforces', src, lang, pid)
-        import time
-        time.sleep(20)
+        self.ctl.submit_code('codeforces', src, lang, pid)
 
 
 if __name__ == '__main__':

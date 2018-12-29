@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Created by crazyX on 2018/7/8
-from __future__ import (absolute_import, division, print_function)
+from __future__ import (absolute_import, division, print_function, unicode_literals)
 
 from socket import timeout
 from bs4 import BeautifulSoup
@@ -97,7 +97,7 @@ class POJ(OJ):
         )
         ret = self.post(self.url_login, data)
         if ret:
-            html = ret.read().decode()
+            html = ret.read().decode('utf-8')
             if html.find('loginlog') > 0:
                 return True, ''
             else:
@@ -108,7 +108,7 @@ class POJ(OJ):
     def is_login(self):
         ret = self.get(self.url_home)
         if ret:
-            html = ret.read().decode()
+            html = ret.read().decode('utf-8')
             return True if html.find('loginlog') > 0 else False
         else:
             return False
@@ -127,7 +127,7 @@ class POJ(OJ):
     def get_problem(self, pid):
         ret = self.get(self.url_problem(pid))
         if ret:
-            html = ret.read().decode()
+            html = ret.read().decode('utf-8')
             soup = BeautifulSoup(html, 'html5lib')
             title = soup.find('title').text
             if title == 'Error':
@@ -204,7 +204,7 @@ class POJ(OJ):
                 ok, info = self.get_result()
                 return (True, info['rid']) if ok else (False, '提交代码（获取提交id）：' + info)
             else:
-                html = ret.read().decode()
+                html = ret.read().decode('utf-8')
                 soup = BeautifulSoup(html, 'html5lib')
                 err = soup.find('font', {'size': 4})
                 if err and err.text == 'Error Occurred':
@@ -218,7 +218,7 @@ class POJ(OJ):
         # 获取url_result下的第一个结果
         ret = self.get(url_result)
         if ret:
-            html = ret.read().decode()
+            html = ret.read().decode('utf-8')
             soup = BeautifulSoup(html, 'html5lib')
             table = soup.find('table', {'class': 'a'})
             trs = table.find_all('tr')
@@ -258,7 +258,7 @@ class POJ(OJ):
         url = self.url_home + 'showcompileinfo?solution_id={}'.format(rid)
         ret = self.get(url)
         if ret:
-            html = ret.read().decode()
+            html = ret.read().decode('utf-8')
             soup = BeautifulSoup(html, 'html5lib')
             pre = soup.find('pre')
             if pre:

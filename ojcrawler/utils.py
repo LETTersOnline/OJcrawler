@@ -28,7 +28,7 @@ def sample_save_image(image_url, oj_name):
     # 1. 可以将图片保存到本地然后返回静态服务器的地址
     # 2. 可以上传到某图云然后返回图云的地址
     # 3. 也可以直接返回源oj的地址，这样如果不能访问外网就存在风险
-    print(oj_name)
+    print(oj_name, image_url)
     return image_url
 
 

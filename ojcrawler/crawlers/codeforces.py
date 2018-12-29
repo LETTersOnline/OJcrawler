@@ -288,13 +288,29 @@ class Codeforces(OJ):
             # 注意这儿的语言不是全大写
             submit_form['programTypeId'] = self.get_languages()[lang]
             self.browser.submit_form(submit_form)
+
+            # if 'csrf_token' in self.browser.url:
+            #     submit_form = self.browser.get_form(class_='submit-form')
+            #     submit_form['programTypeId'] = self.get_languages()[lang]
+            #     self.browser.submit_form(submit_form)
+
             if self.browser.url == self.url_status[:-1]:
                 ok, info = self.get_result()
                 return (True, info['rid']) if ok else (False, '提交代码（获取提交id）：' + info)
             elif self.url_submit in self.browser.url:
                 soup = BeautifulSoup(self.browser.response.content, 'html5lib')
-                info = soup.find('span', {'class': 'error for__source'}).text
-                return False, info
+                info = []
+                errors = soup.find_all('div', {'class': 'shiftUp'})
+                for error in errors:
+                    spans = error.find_all('span')
+                    for span in spans:
+                        move = dict.fromkeys([ord(c) for c in u"\xa0\n\t"])
+                        output = span.text.translate(move)
+                        # text = ''.join(span.text.split())   # 去除非法空格
+                        text = output.strip()
+                        if text:
+                            info.append(text)
+                return False, '|'.join(info)
             else:
                 return False, '提交代码：未知错误1'
         elif ret is None:
@@ -312,11 +328,13 @@ class Codeforces(OJ):
             trs = table.find_all('tr')
             if len(trs) <= 1:
                 return False, '没有结果'
+            time = ''.join(trs[1].contents[13].text.strip().split())
+            memory = ''.join(trs[1].contents[15].text.strip().split())
             data = {
                 'rid': trs[1].contents[1].text.strip(),
                 'status': trs[1].contents[11].text.strip(),
-                'time': trs[1].contents[13].text.strip().split('\xa0')[0],
-                'memory': trs[1].contents[15].text.strip().split('\xa0')[0],
+                'time': time.split(' ')[0],
+                'memory': memory.split(' ')[0],
                 'ce_info': '',
             }
             if data['status'] == 'Compilation error':
