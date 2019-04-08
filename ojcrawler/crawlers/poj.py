@@ -135,6 +135,7 @@ class POJ(OJ):
                 limits = plm.find_all('td')
                 problem_type = 'special judge' if 'Special Judge' in [x.text for x in limits] else 'regular'
                 origin = self.url_problem(pid)
+                ac_submit = [limits[5].text, limits[3].text, ]
                 limits = {
                     'default': (int(limits[0].contents[1].strip()[:-2]),
                                 int(limits[2].contents[1].strip()[:-1])),
@@ -178,6 +179,14 @@ class POJ(OJ):
                 compatible_data = {}
                 for key in self.compatible_problem_fields:
                     compatible_data[key] = eval(key)
+
+                # 增加题目提交数和ac数
+                try:
+                    compatible_data['accepted_number'] = int(ac_submit[0].split(':')[1])
+                    compatible_data['submitted_number'] = int(ac_submit[1].split(':')[1])
+                except Exception as e:
+                    logger.warning("获取submit和ac数失败({})：".format(pid) + str(e))
+
                 return True, compatible_data
         else:
             return False, '获取题目：http方法错误，请检查网络后重试'

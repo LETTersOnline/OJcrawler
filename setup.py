@@ -1,11 +1,11 @@
 from setuptools import setup, find_packages
 
-with open("README.md", "r") as fh:
+with open("README.md", encoding='utf-8', mode="r") as fh:
     long_description = fh.read()
 
 setup(
     name='ojcrawler',
-    version='1.1.6',
+    version='1.1.8',
     packages=find_packages(),
     url='https://github.com/LETTersOnline/ojcrawler',
     license='MIT',

@@ -145,6 +145,7 @@ class HDU(OJ):
                 limits_list = limits.contents[0].split(' ')
                 time_java, time_default = [int(x) for x in limits_list[2].split('/')]
                 memory_java, memory_default = [int(x) for x in limits_list[6].split('/')]
+                ac_submit = limits.contents[2].replace('\xa0', ' ').split(' ')
 
                 limits = {
                     'default': (time_default, memory_default),
@@ -186,6 +187,14 @@ class HDU(OJ):
                 compatible_data = {}
                 for key in self.compatible_problem_fields:
                     compatible_data[key] = eval(key)
+
+                # 增加题目提交数和ac数
+                try:
+                    compatible_data['accepted_number'] = int(ac_submit[-1])
+                    compatible_data['submitted_number'] = int(ac_submit[2])
+                except Exception as e:
+                    logger.warning("获取submit和ac数失败({})：".format(pid) + str(e))
+
                 return True, compatible_data
         else:
             return False, '获取题目：http方法错误，请检查网络后重试'
