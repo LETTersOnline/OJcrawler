@@ -38,8 +38,9 @@ class Codeforces(OJ):
     def url_home(self):
         return 'http://codeforces.com/'
 
-    def url_problem(self, cid, pid):
+    def url_problem(self, cpid):
         # codeforces需要一个cid和一个pid来确定题目
+        cid, pid = self.split_pid(cpid)
         return self.url_home + 'problemset/problem/{}/{}'.format(cid, pid)
 
     @property
@@ -185,9 +186,8 @@ class Codeforces(OJ):
         return html[:stp] + saved_url + self.replace_image(html[edp:])
 
     def get_problem(self, cpid):
+        ret = self.get(self.url_problem(cpid))
         cid, pid = self.split_pid(cpid)
-        ret = self.get(self.url_problem(cid, pid))
-
         if ret:
             soup = BeautifulSoup(self.browser.response.content, 'html5lib')
             header = soup.find('div', {'class': 'header'})
@@ -198,7 +198,7 @@ class Codeforces(OJ):
                 if (interactive and interactive.text == 'This is an interactive problem.') \
                 else 'special judge'
 
-            origin = self.url_problem(cid, pid)
+            origin = self.url_problem(cpid)
 
             limits = {
                 'default': (int(float(header.find('div', {'class': 'time-limit'}).contents[1].split(' ')[0]) * 1000),
@@ -248,6 +248,14 @@ class Codeforces(OJ):
             compatible_data = {}
             for key in self.compatible_problem_fields:
                 compatible_data[key] = eval(key)
+
+            for tag in tags:
+                if tag.startswith('*'):
+                    try:
+                        val = int(tag[1:])
+                        compatible_data['difficult_number'] = val
+                    except ValueError:
+                        pass
             return True, compatible_data
 
         elif ret is None:
