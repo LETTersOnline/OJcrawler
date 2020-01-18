@@ -166,3 +166,8 @@ class Controller(object):
         if oj_name not in supports.keys():
             raise NotImplementedError('oj_name only supports: {}'.format(str(supports.keys())))
         return self.static_supports[oj_name].get_problem(pid)
+
+    def get_contest(self, oj_name, cid):
+        if oj_name not in supports.keys():
+            raise NotImplementedError('oj_name only supports: {}'.format(str(supports.keys())))
+        return self.static_supports[oj_name].get_contest(cid)

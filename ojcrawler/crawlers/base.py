@@ -149,6 +149,9 @@ class OJ(object):
     def get_problem(self, *args, **kwargs):
         raise NotImplementedError
 
+    def get_contest(self, *args, **kwargs):
+        raise NotImplementedError
+
     def submit_code(self, *args, **kwargs):
         # 返回 run id
         raise NotImplementedError

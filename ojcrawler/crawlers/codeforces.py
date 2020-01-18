@@ -43,6 +43,9 @@ class Codeforces(OJ):
         cid, pid = self.split_pid(cpid)
         return self.url_home + 'problemset/problem/{}/{}'.format(cid, pid)
 
+    def url_contest(self, cid):
+        return self.url_home + 'contest/{}'.format(cid)
+
     @property
     def url_login(self):
         return self.url_home + 'enter/'
@@ -262,6 +265,19 @@ class Codeforces(OJ):
             return False, '获取题目：http方法错误，请检查网络后重试'
         else:
             return False, '获取题目：不存在的题目'
+
+    def get_contest(self, cid):
+        ret = self.get(self.url_contest(cid))
+        if ret:
+            soup = BeautifulSoup(self.browser.response.content, 'html5lib')
+            tags = soup.find_all('a', {'title': 'Participants solved the problem'})
+            results = []
+            for tag in tags:
+                results.append(tag.contents[1].strip())
+            return results
+        else:
+            return False, '获取比赛页面失败'
+
 
     @staticmethod
     def split_pid(cid: str):
